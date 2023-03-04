@@ -54,5 +54,22 @@ func Routes() *gin.Engine {
 	// Delete a user --> id is required
 	Routes.DELETE("/users/:id", controllers.DeleteUser)
 
+	/* Groups routes */
+
+	// Find all groups registered
+	Routes.GET("/groups", controllers.FindGroups)
+
+	// Find a specific group by its id
+	Routes.GET("/groups/:id", controllers.FindGroup)
+
+	// Create a group
+	Routes.POST("/groups", controllers.CreateGroup)
+
+	// Update data for a group --> id is required
+	Routes.PATCH("/groups/:id", controllers.UpdateGroup)
+
+	// Delete a group --> id is required
+	Routes.DELETE("/groups/:id", controllers.DeleteGroup)
+
 	return Routes
 }
