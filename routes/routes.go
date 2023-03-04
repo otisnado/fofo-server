@@ -13,7 +13,7 @@ func Routes() *gin.Engine {
 
 	// Find a specific project --> id is required
 	Routes.GET("/projects/:id", controllers.FindProject)
-	
+
 	// Create a project
 	Routes.POST("/projects", controllers.CreateProject)
 
@@ -22,6 +22,20 @@ func Routes() *gin.Engine {
 
 	// Delete a project --> id is required
 	Routes.DELETE("/projects/:id", controllers.DeleteProject)
+
+	/* Languages routes */
+
+	// Find all languages supported
+	Routes.GET("/languages", controllers.FindLanguages)
+
+	// Find a specific language by its id
+	Routes.GET("languages/:id", controllers.FindLanguage)
+
+	// Create a language
+	Routes.POST("/languages", controllers.CreateLanguage)
+
+	// Update data for a language --> id is required
+	Routes.PATCH("/languages/:id", controllers.UpdateLanguage)
 
 	return Routes
 }
