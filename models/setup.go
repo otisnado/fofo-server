@@ -16,8 +16,9 @@ func ConnectDatabase() {
 	dbname := os.Getenv("DBNAME")
 	dbuser := os.Getenv("DBUSER")
 	dbpass := os.Getenv("DBPASS")
+	dbtz := os.Getenv("DBTZ")
 
-	dsn := dbuser + ":" + dbpass + "@tcp(" + dbhost + ":" + dbport + ")/" + dbname
+	dsn := dbuser + ":" + dbpass + "@tcp(" + dbhost + ":" + dbport + ")/" + dbname + "?parseTime=true&loc=" + dbtz
 	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
 	if err != nil {
 		log.Fatalln(err)
