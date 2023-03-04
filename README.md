@@ -35,3 +35,4 @@ This API has the nexts endpoints:
 - [ ] Buffalo CLI support to generate prjects based on Buffalo Framework
 - [ ] Connect to GitHub to create projects repositories
 - [ ] Connecto to Azure DevOps Repos to create projects repositories
+- [ ] User login support

@@ -37,5 +37,39 @@ func Routes() *gin.Engine {
 	// Update data for a language --> id is required
 	Routes.PATCH("/languages/:id", controllers.UpdateLanguage)
 
+	/* Users routes */
+
+	// Find all users registered
+	Routes.GET("/users", controllers.FindUsers)
+
+	// Find a specific user by its id
+	Routes.GET("/users/:id", controllers.FindUser)
+
+	// Create a user
+	Routes.POST("/users", controllers.CreateUser)
+
+	// Update data for a user --> id is required
+	Routes.PATCH("/users/:id", controllers.UpdateUser)
+
+	// Delete a user --> id is required
+	Routes.DELETE("/users/:id", controllers.DeleteUser)
+
+	/* Groups routes */
+
+	// Find all groups registered
+	Routes.GET("/groups", controllers.FindGroups)
+
+	// Find a specific group by its id
+	Routes.GET("/groups/:id", controllers.FindGroup)
+
+	// Create a group
+	Routes.POST("/groups", controllers.CreateGroup)
+
+	// Update data for a group --> id is required
+	Routes.PATCH("/groups/:id", controllers.UpdateGroup)
+
+	// Delete a group --> id is required
+	Routes.DELETE("/groups/:id", controllers.DeleteGroup)
+
 	return Routes
 }
