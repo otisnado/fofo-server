@@ -3,6 +3,7 @@ package controllers
 import (
 	"net/http"
 	"strconv"
+	"time"
 
 	"github.com/gin-gonic/gin"
 	"github.com/otisnado/fofo-server/models"
@@ -28,13 +29,13 @@ func FindProject(c *gin.Context) {
 }
 
 func CreateProject(c *gin.Context) {
-	var input models.InputProject
+	var input models.Project
 	if err := c.ShouldBindJSON(&input); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 
-	project := models.Project{Name: input.Name, Created_by: input.Created_by, Language: input.Language}
+	project := models.Project{Name: input.Name, Created_by: input.Created_by, Language: input.Language, CreatedAt: time.Now(), UpdatedAt: input.UpdatedAt}
 	models.DB.Create(&project)
 	c.JSON(http.StatusCreated, gin.H{"data": project})
 }
@@ -48,7 +49,7 @@ func UpdateProject(c *gin.Context) {
 		return
 	}
 
-	var input models.UpdateProjectInput
+	var input models.Project
 	if err := c.ShouldBindJSON(&input); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
