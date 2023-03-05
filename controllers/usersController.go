@@ -35,6 +35,12 @@ func CreateUser(c *gin.Context) {
 		return
 	}
 
+	if err := input.HashPassword(input.Password); err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		c.Abort()
+		return
+	}
+
 	user := models.User{Name: input.Name, Lastname: input.Lastname, Username: input.Username, Mail: input.Mail, Password: input.Password, Group: input.Group, State: input.State, CreatedAt: time.Now(), UpdatedAt: input.UpdatedAt}
 	models.DB.Create(&user)
 	c.JSON(http.StatusCreated, gin.H{"data": user})
