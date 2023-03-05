@@ -3,73 +3,86 @@ package routes
 import (
 	"github.com/gin-gonic/gin"
 	"github.com/otisnado/fofo-server/controllers"
+	"github.com/otisnado/fofo-server/middlewares"
 )
 
-func Routes() *gin.Engine {
-	Routes := gin.Default()
+func InitRouter() *gin.Engine {
+	router := gin.Default()
 
-	// Find all projects
-	Routes.GET("/projects", controllers.FindProjects)
+	api := router.Group("/_")
+	{
 
-	// Find a specific project --> id is required
-	Routes.GET("/projects/:id", controllers.FindProject)
+		/* JWT */
 
-	// Create a project
-	Routes.POST("/projects", controllers.CreateProject)
+		// Generate token
+		router.POST("/token", controllers.GenerateToken)
 
-	// Update data for a project --> id is required
-	Routes.PATCH("/projects/:id", controllers.UpdateProject)
+		secure := api.Group("/api").Use(middlewares.Auth())
+		{
+			// Find all projects
+			secure.GET("/projects", controllers.FindProjects)
 
-	// Delete a project --> id is required
-	Routes.DELETE("/projects/:id", controllers.DeleteProject)
+			// Find a specific project --> id is required
+			secure.GET("/projects/:id", controllers.FindProject)
 
-	/* Languages routes */
+			// Create a project
+			secure.POST("/projects", controllers.CreateProject)
 
-	// Find all languages supported
-	Routes.GET("/languages", controllers.FindLanguages)
+			// Update data for a project --> id is required
+			secure.PATCH("/projects/:id", controllers.UpdateProject)
 
-	// Find a specific language by its id
-	Routes.GET("languages/:id", controllers.FindLanguage)
+			// Delete a project --> id is required
+			secure.DELETE("/projects/:id", controllers.DeleteProject)
 
-	// Create a language
-	Routes.POST("/languages", controllers.CreateLanguage)
+			/* Languages routes */
 
-	// Update data for a language --> id is required
-	Routes.PATCH("/languages/:id", controllers.UpdateLanguage)
+			// Find all languages supported
+			secure.GET("/languages", controllers.FindLanguages)
 
-	/* Users routes */
+			// Find a specific language by its id
+			secure.GET("languages/:id", controllers.FindLanguage)
 
-	// Find all users registered
-	Routes.GET("/users", controllers.FindUsers)
+			// Create a language
+			secure.POST("/languages", controllers.CreateLanguage)
 
-	// Find a specific user by its id
-	Routes.GET("/users/:id", controllers.FindUser)
+			// Update data for a language --> id is required
+			secure.PATCH("/languages/:id", controllers.UpdateLanguage)
 
-	// Create a user
-	Routes.POST("/users", controllers.CreateUser)
+			/* Users routes */
 
-	// Update data for a user --> id is required
-	Routes.PATCH("/users/:id", controllers.UpdateUser)
+			// Find all users registered
+			secure.GET("/users", controllers.FindUsers)
 
-	// Delete a user --> id is required
-	Routes.DELETE("/users/:id", controllers.DeleteUser)
+			// Find a specific user by its id
+			secure.GET("/users/:id", controllers.FindUser)
 
-	/* Groups routes */
+			// Create a user
+			secure.POST("/users", controllers.CreateUser)
 
-	// Find all groups registered
-	Routes.GET("/groups", controllers.FindGroups)
+			// Update data for a user --> id is required
+			secure.PATCH("/users/:id", controllers.UpdateUser)
 
-	// Find a specific group by its id
-	Routes.GET("/groups/:id", controllers.FindGroup)
+			// Delete a user --> id is required
+			secure.DELETE("/users/:id", controllers.DeleteUser)
 
-	// Create a group
-	Routes.POST("/groups", controllers.CreateGroup)
+			/* Groups routes */
 
-	// Update data for a group --> id is required
-	Routes.PATCH("/groups/:id", controllers.UpdateGroup)
+			// Find all groups registered
+			secure.GET("/groups", controllers.FindGroups)
 
-	// Delete a group --> id is required
-	Routes.DELETE("/groups/:id", controllers.DeleteGroup)
+			// Find a specific group by its id
+			secure.GET("/groups/:id", controllers.FindGroup)
 
-	return Routes
+			// Create a group
+			secure.POST("/groups", controllers.CreateGroup)
+
+			// Update data for a group --> id is required
+			secure.PATCH("/groups/:id", controllers.UpdateGroup)
+
+			// Delete a group --> id is required
+			secure.DELETE("/groups/:id", controllers.DeleteGroup)
+		}
+	}
+
+	return router
 }

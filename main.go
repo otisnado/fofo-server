@@ -7,6 +7,7 @@ import (
 
 func main() {
 	models.ConnectDatabase()
-	routes.Routes().Run()
+	router := routes.InitRouter()
+	router.Run()
 
 }
