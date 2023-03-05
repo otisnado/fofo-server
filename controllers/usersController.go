@@ -7,6 +7,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/otisnado/fofo-server/models"
+	"github.com/otisnado/fofo-server/utils"
 )
 
 func FindUsers(c *gin.Context) {
@@ -31,6 +32,16 @@ func FindUser(c *gin.Context) {
 func CreateUser(c *gin.Context) {
 	var input models.User
 	if err := c.ShouldBindJSON(&input); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	if err := utils.CheckIfMailExists(input.Mail); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	if err := utils.CheckIfUsernameExists(input.Username); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
