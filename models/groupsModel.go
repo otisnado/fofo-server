@@ -8,3 +8,23 @@ type Group struct {
 	CreatedAt time.Time `gorm:"not null"`
 	UpdatedAt time.Time `gorm:"not null"`
 }
+
+type SuccessFindGroups struct {
+	Data []Project `json:"data"`
+}
+
+type SuccessFindGroup struct {
+	Data Project `json:"data"`
+}
+
+type SuccessGroupCreation struct {
+	Data Project `json:"data"`
+}
+
+type SuccessGroupDelete struct {
+	Data bool `json:"data"`
+}
+
+type SuccessGroupUpdate struct {
+	Data Project `json:"data"`
+}

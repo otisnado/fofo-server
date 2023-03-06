@@ -9,3 +9,23 @@ type Language struct {
 	CreatedAt  time.Time `json:"created"`
 	UpdatedAt  time.Time `json:"updated"`
 }
+
+type SuccessFindLanguages struct {
+	Data []Project `json:"data"`
+}
+
+type SuccessFindLanguage struct {
+	Data Project `json:"data"`
+}
+
+type SuccessLanguageCreation struct {
+	Data Project `json:"data"`
+}
+
+type SuccessLanguageDelete struct {
+	Data bool `json:"data"`
+}
+
+type SuccessLanguageUpdate struct {
+	Data Project `json:"data"`
+}

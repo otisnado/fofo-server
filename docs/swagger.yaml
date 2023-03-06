@@ -1,0 +1,822 @@
+definitions:
+  models.ErrorMessage:
+    properties:
+      error:
+        type: string
+    type: object
+  models.Group:
+    properties:
+      createdAt:
+        type: string
+      id:
+        type: integer
+      name:
+        type: string
+      updatedAt:
+        type: string
+    type: object
+  models.Language:
+    properties:
+      created:
+        type: string
+      created_by:
+        type: integer
+      id:
+        type: integer
+      name:
+        type: string
+      updated:
+        type: string
+    type: object
+  models.Project:
+    properties:
+      created:
+        type: string
+      created_by:
+        type: string
+      id:
+        type: integer
+      language:
+        type: string
+      name:
+        type: string
+      updated:
+        type: string
+    type: object
+  models.SuccessFindGroup:
+    properties:
+      data:
+        $ref: '#/definitions/models.Project'
+    type: object
+  models.SuccessFindGroups:
+    properties:
+      data:
+        items:
+          $ref: '#/definitions/models.Project'
+        type: array
+    type: object
+  models.SuccessFindLanguage:
+    properties:
+      data:
+        $ref: '#/definitions/models.Project'
+    type: object
+  models.SuccessFindLanguages:
+    properties:
+      data:
+        items:
+          $ref: '#/definitions/models.Project'
+        type: array
+    type: object
+  models.SuccessFindProject:
+    properties:
+      data:
+        $ref: '#/definitions/models.Project'
+    type: object
+  models.SuccessFindProjects:
+    properties:
+      data:
+        items:
+          $ref: '#/definitions/models.Project'
+        type: array
+    type: object
+  models.SuccessFindUser:
+    properties:
+      data:
+        $ref: '#/definitions/models.User'
+    type: object
+  models.SuccessFindUsers:
+    properties:
+      data:
+        items:
+          $ref: '#/definitions/models.User'
+        type: array
+    type: object
+  models.SuccessGroupCreation:
+    properties:
+      data:
+        $ref: '#/definitions/models.Project'
+    type: object
+  models.SuccessGroupDelete:
+    properties:
+      data:
+        type: boolean
+    type: object
+  models.SuccessGroupUpdate:
+    properties:
+      data:
+        $ref: '#/definitions/models.Project'
+    type: object
+  models.SuccessLanguageCreation:
+    properties:
+      data:
+        $ref: '#/definitions/models.Project'
+    type: object
+  models.SuccessLanguageDelete:
+    properties:
+      data:
+        type: boolean
+    type: object
+  models.SuccessLanguageUpdate:
+    properties:
+      data:
+        $ref: '#/definitions/models.Project'
+    type: object
+  models.SuccessProjectCreation:
+    properties:
+      data:
+        $ref: '#/definitions/models.Project'
+    type: object
+  models.SuccessProjectDelete:
+    properties:
+      data:
+        type: boolean
+    type: object
+  models.SuccessProjectUpdate:
+    properties:
+      data:
+        $ref: '#/definitions/models.Project'
+    type: object
+  models.SuccessUserCreation:
+    properties:
+      data:
+        $ref: '#/definitions/models.User'
+    type: object
+  models.SuccessUserDelete:
+    properties:
+      data:
+        type: boolean
+    type: object
+  models.SuccessUserUpdate:
+    properties:
+      data:
+        $ref: '#/definitions/models.User'
+    type: object
+  models.TokenRequest:
+    properties:
+      mail:
+        type: string
+      password:
+        type: string
+    type: object
+  models.TokenResponse:
+    properties:
+      token:
+        type: string
+    type: object
+  models.User:
+    properties:
+      createdAt:
+        type: string
+      group:
+        type: integer
+      id:
+        type: integer
+      lastname:
+        type: string
+      mail:
+        type: string
+      name:
+        type: string
+      password:
+        type: string
+      state:
+        type: boolean
+      updatedAt:
+        type: string
+      username:
+        type: string
+    type: object
+info:
+  contact: {}
+paths:
+  /groups:
+    get:
+      description: Bulk all fofo-server's groups
+      parameters:
+      - description: JWT without bearer
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.SuccessFindGroups'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/models.ErrorMessage'
+      summary: FindGroups
+      tags:
+      - Groups
+    post:
+      description: Create group with models.Group model
+      parameters:
+      - description: JWT without bearer
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: Group data
+        in: body
+        name: group
+        required: true
+        schema:
+          $ref: '#/definitions/models.Group'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.SuccessGroupCreation'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.ErrorMessage'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/models.ErrorMessage'
+      summary: CreateGroup
+      tags:
+      - Groups
+  /groups/{id}:
+    delete:
+      description: Delete group with using id
+      parameters:
+      - description: JWT without bearer
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: Group ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.SuccessGroupDelete'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.ErrorMessage'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/models.ErrorMessage'
+      summary: DeleteGroup
+      tags:
+      - Groups
+    get:
+      description: Find a group with given id in path
+      parameters:
+      - description: JWT without bearer
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: Group ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.SuccessFindGroup'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.ErrorMessage'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/models.ErrorMessage'
+      summary: FindGroup
+      tags:
+      - Groups
+    patch:
+      description: Update group with models.Group model
+      parameters:
+      - description: JWT without bearer
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: Group data
+        in: body
+        name: group
+        required: true
+        schema:
+          $ref: '#/definitions/models.Group'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.SuccessGroupUpdate'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.ErrorMessage'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/models.ErrorMessage'
+      summary: UpdateGroup
+      tags:
+      - Groups
+  /languages:
+    get:
+      description: Bulk all fofo-server's languages
+      parameters:
+      - description: JWT without bearer
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.SuccessFindLanguages'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/models.ErrorMessage'
+      summary: FindLanguages
+      tags:
+      - Languages
+    post:
+      description: Create language with models.Language model
+      parameters:
+      - description: JWT without bearer
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: Language data
+        in: body
+        name: language
+        required: true
+        schema:
+          $ref: '#/definitions/models.Language'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.SuccessLanguageCreation'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.ErrorMessage'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/models.ErrorMessage'
+      summary: CreateLanguage
+      tags:
+      - Languages
+  /languages/{id}:
+    delete:
+      description: Delete language with using id
+      parameters:
+      - description: JWT without bearer
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: Language ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.SuccessLanguageDelete'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.ErrorMessage'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/models.ErrorMessage'
+      summary: DeleteLanguage
+      tags:
+      - Languages
+    get:
+      description: Find a language with given id in path
+      parameters:
+      - description: JWT without bearer
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: Language ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.SuccessFindLanguage'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.ErrorMessage'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/models.ErrorMessage'
+      summary: FindLanguage
+      tags:
+      - Languages
+    patch:
+      description: Update language with models.Language model
+      parameters:
+      - description: JWT without bearer
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: Language data
+        in: body
+        name: language
+        required: true
+        schema:
+          $ref: '#/definitions/models.Language'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.SuccessLanguageUpdate'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.ErrorMessage'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/models.ErrorMessage'
+      summary: UpdateLanguage
+      tags:
+      - Languages
+  /projects:
+    get:
+      description: Bulk all fofo-server's projects
+      parameters:
+      - description: JWT without bearer
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.SuccessFindProjects'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/models.ErrorMessage'
+      summary: FindProjects
+      tags:
+      - Projects
+    patch:
+      description: Update project with models.Project model
+      parameters:
+      - description: JWT without bearer
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: Project data
+        in: body
+        name: project
+        required: true
+        schema:
+          $ref: '#/definitions/models.Project'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.SuccessProjectUpdate'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.ErrorMessage'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/models.ErrorMessage'
+      summary: UpdateProject
+      tags:
+      - Projects
+    post:
+      description: Create project with models.Project model
+      parameters:
+      - description: JWT without bearer
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: Project data
+        in: body
+        name: project
+        required: true
+        schema:
+          $ref: '#/definitions/models.Project'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.SuccessProjectCreation'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.ErrorMessage'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/models.ErrorMessage'
+      summary: CreateProject
+      tags:
+      - Projects
+  /projects/{id}:
+    delete:
+      description: Delete project using id
+      parameters:
+      - description: JWT without bearer
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: Project ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.SuccessProjectDelete'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.ErrorMessage'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/models.ErrorMessage'
+      summary: DeleteProject
+      tags:
+      - Projects
+    get:
+      description: Find a project with given id in path
+      parameters:
+      - description: JWT without bearer
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: Project ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.SuccessFindProject'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.ErrorMessage'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/models.ErrorMessage'
+      summary: FindProject
+      tags:
+      - Projects
+  /token:
+    post:
+      consumes:
+      - application/json
+      description: Generate a valid token with user's mail and password
+      parameters:
+      - description: User credentials
+        in: body
+        name: auth
+        required: true
+        schema:
+          $ref: '#/definitions/models.TokenRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.TokenResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/models.ErrorMessage'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ErrorMessage'
+      summary: GenerateToken
+      tags:
+      - Authentication
+  /users:
+    get:
+      description: Bulk all fofo-server's users
+      parameters:
+      - description: JWT without bearer
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.SuccessFindUsers'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/models.ErrorMessage'
+      summary: FindUsers
+      tags:
+      - Users
+    post:
+      description: Create user with models.User model
+      parameters:
+      - description: JWT without bearer
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: User data
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/models.User'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.SuccessUserCreation'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.ErrorMessage'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/models.ErrorMessage'
+      summary: CreateUser
+      tags:
+      - Users
+  /users/{id}:
+    delete:
+      description: Delete user with using id
+      parameters:
+      - description: JWT without bearer
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: User ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.SuccessUserDelete'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.ErrorMessage'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/models.ErrorMessage'
+      summary: DeleteUser
+      tags:
+      - Users
+    get:
+      description: Find a user with given id in path
+      parameters:
+      - description: JWT without bearer
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: User ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.SuccessFindUser'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.ErrorMessage'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/models.ErrorMessage'
+      summary: FindUser
+      tags:
+      - Users
+    patch:
+      description: Update user with models.User model
+      parameters:
+      - description: JWT without bearer
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: User data
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/models.User'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.SuccessUserUpdate'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.ErrorMessage'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/models.ErrorMessage'
+      summary: UpdateUser
+      tags:
+      - Users
+swagger: "2.0"

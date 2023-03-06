@@ -19,6 +19,26 @@ type User struct {
 	UpdatedAt time.Time `gorm:"not null"`
 }
 
+type SuccessFindUsers struct {
+	Data []User `json:"data"`
+}
+
+type SuccessFindUser struct {
+	Data User `json:"data"`
+}
+
+type SuccessUserCreation struct {
+	Data User `json:"data"`
+}
+
+type SuccessUserDelete struct {
+	Data bool `json:"data"`
+}
+
+type SuccessUserUpdate struct {
+	Data User `json:"data"`
+}
+
 func (user *User) HashPassword(password string) error {
 	bytes, err := bcrypt.GenerateFromPassword([]byte(password), 14)
 	if err != nil {
