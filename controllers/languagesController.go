@@ -102,3 +102,28 @@ func UpdateLanguage(c *gin.Context) {
 
 	c.JSON(http.StatusOK, gin.H{"data": language})
 }
+
+// DeleteLanguage	godoc
+// @Summary		DeleteLanguage
+// @Schemes
+// @Description	Delete language with using id
+// @Tags		Languages
+// @Produce		json
+// @Param		Authorization		header	string	true	"JWT without bearer"
+// @Param		id		path		int				true	"Language ID"
+// @Success		200		{object}	models.SuccessLanguageDelete
+// @Failure		400,401	{object}	models.ErrorMessage
+// @Router		/languages/{id}	[delete]
+func DeleteLanguage(c *gin.Context) {
+	var language models.Language
+	language_id, _ := strconv.Atoi(c.Param("id"))
+
+	if err := models.DB.Where("id = ?", language_id).First(&language).Error; err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Language not found!"})
+		return
+	}
+
+	models.DB.Delete(&language)
+
+	c.JSON(http.StatusOK, gin.H{"data": true})
+}

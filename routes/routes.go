@@ -53,6 +53,9 @@ func InitRouter() *gin.Engine {
 			// Update data for a language --> id is required
 			secure.PATCH("/languages/:id", controllers.UpdateLanguage)
 
+			// Delete language using id
+			secure.DELETE("languages/:id", controllers.DeleteLanguage)
+
 			/* Users routes */
 
 			// Find all users registered
