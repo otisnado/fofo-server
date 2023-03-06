@@ -3,21 +3,26 @@ package routes
 import (
 	"github.com/gin-gonic/gin"
 	"github.com/otisnado/fofo-server/controllers"
+	"github.com/otisnado/fofo-server/docs"
 	"github.com/otisnado/fofo-server/middlewares"
+	swaggerfiles "github.com/swaggo/files"
+	ginSwagger "github.com/swaggo/gin-swagger"
 )
 
 func InitRouter() *gin.Engine {
 	router := gin.Default()
 
-	api := router.Group("/_")
+	docs.SwaggerInfo.BasePath = "/api/v1"
+
+	api := router.Group("/api/v1")
 	{
 
 		/* JWT */
 
 		// Generate token
-		router.POST("/token", controllers.GenerateToken)
+		router.POST("/api/v1/token", controllers.GenerateToken)
 
-		secure := api.Group("/api").Use(middlewares.Auth())
+		secure := api.Group("/").Use(middlewares.Auth())
 		{
 			// Find all projects
 			secure.GET("/projects", controllers.FindProjects)
@@ -47,6 +52,9 @@ func InitRouter() *gin.Engine {
 
 			// Update data for a language --> id is required
 			secure.PATCH("/languages/:id", controllers.UpdateLanguage)
+
+			// Delete language using id
+			secure.DELETE("languages/:id", controllers.DeleteLanguage)
 
 			/* Users routes */
 
@@ -83,6 +91,8 @@ func InitRouter() *gin.Engine {
 			secure.DELETE("/groups/:id", controllers.DeleteGroup)
 		}
 	}
+
+	router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerfiles.Handler))
 
 	return router
 }

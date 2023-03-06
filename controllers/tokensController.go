@@ -8,6 +8,17 @@ import (
 	"github.com/otisnado/fofo-server/models"
 )
 
+// GenerateToken	godoc
+// @Summary			GenerateToken
+// @Schemes
+// @Description		Generate a valid token with user's mail and password
+// @Tags			Authentication
+// @Accept			json
+// @Param			auth	body		models.TokenRequest		true	"User credentials"
+// @Produce			json
+// @Success			200		{object}	models.TokenResponse
+// @Failure			401,500		{object}	models.ErrorMessage
+// @Router			/token	[post]
 func GenerateToken(c *gin.Context) {
 	var request models.TokenRequest
 	var user models.User

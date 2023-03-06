@@ -10,3 +10,23 @@ type Project struct {
 	CreatedAt  time.Time `json:"created"`
 	UpdatedAt  time.Time `json:"updated"`
 }
+
+type SuccessFindProjects struct {
+	Data []Project `json:"data"`
+}
+
+type SuccessFindProject struct {
+	Data Project `json:"data"`
+}
+
+type SuccessProjectCreation struct {
+	Data Project `json:"data"`
+}
+
+type SuccessProjectDelete struct {
+	Data bool `json:"data"`
+}
+
+type SuccessProjectUpdate struct {
+	Data Project `json:"data"`
+}
