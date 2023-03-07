@@ -689,6 +689,10 @@ paths:
           description: Unauthorized
           schema:
             $ref: '#/definitions/models.ErrorMessage'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ErrorMessage'
       summary: FindUsers
       tags:
       - Users
@@ -721,6 +725,10 @@ paths:
           description: Unauthorized
           schema:
             $ref: '#/definitions/models.ErrorMessage'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ErrorMessage'
       summary: CreateUser
       tags:
       - Users
@@ -745,12 +753,16 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/models.SuccessUserDelete'
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/models.ErrorMessage'
         "401":
           description: Unauthorized
+          schema:
+            $ref: '#/definitions/models.ErrorMessage'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.ErrorMessage'
+        "500":
+          description: Internal Server Error
           schema:
             $ref: '#/definitions/models.ErrorMessage'
       summary: DeleteUser
@@ -784,6 +796,10 @@ paths:
           description: Unauthorized
           schema:
             $ref: '#/definitions/models.ErrorMessage'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.ErrorMessage'
       summary: FindUser
       tags:
       - Users
@@ -814,6 +830,14 @@ paths:
             $ref: '#/definitions/models.ErrorMessage'
         "401":
           description: Unauthorized
+          schema:
+            $ref: '#/definitions/models.ErrorMessage'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.ErrorMessage'
+        "500":
+          description: Internal Server Error
           schema:
             $ref: '#/definitions/models.ErrorMessage'
       summary: UpdateUser
