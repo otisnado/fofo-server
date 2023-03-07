@@ -19,6 +19,17 @@ type User struct {
 	UpdatedAt time.Time `gorm:"not null"`
 }
 
+type UserUpdate struct {
+	ID       uint   `json:"id,omitempty"`
+	Name     string `json:"name,omitempty"`
+	Lastname string `json:"lastname,omitempty"`
+	Username string `json:"username,omitempty"`
+	Mail     string `json:"mail,omitempty"`
+	Password string `json:"password,omitempty"`
+	Group    int    `json:"group,omitempty"`
+	State    bool   `json:"state,omitempty"`
+}
+
 type SuccessFindUsers struct {
 	Data []User `json:"data"`
 }
