@@ -2,7 +2,6 @@
 
 A server to have main place where start a new project
 
-
 ## Requeriments
 - Go 1.19.* o superior
 - Docker
@@ -14,11 +13,12 @@ A server to have main place where start a new project
   - `DBUSER` (Default root)
   - `DBPASS` (Default 1234)
   - `DBTZ` (Default America%2FEl_Salvador)
+  - `JWTKEY` JWT key to sign tokens
 - Gow package for development
 
 ## How to start project
 
-#### Devlopment
+#### Development
 1. Clone FoFo Server repository
 ```
 git clone {repository} 
@@ -42,32 +42,23 @@ go install github.com/mitranim/gow@latest
 gow run main.go
 ```
 
-#### Docker
+## Start Docker container
+You can find image on [Docker Hub](https://hub.docker.com/r/otisnado/fofo-server)
 ```
 docker run -d -p 9090:8080 -e DBHOST=localhost -e DBPORT=3306 -e DBNAME=fofo -e DBUSER=root -e DBPASS=1234 -e DBTZ=America%2FEl_Salvador --name fofo-server otisnado/fofo-server:latest
 ```
 
-## API Endpoints
-This API has the nexts endpoints:
-
-#### /projects
-- GET -- Get a list of all projects created with this tool, return the info in JSON
-- POST -- Add a new project, requires JSON structure
-
-### /projects/:id
-- PATCH -- Update data for a projects, requires project id
-
-#### /projects/:id
-- GET -- Get a project by its ID, return the info in JSON
-
-
 ## List of features
 - [x] Projects CRUD
 - [x] Languages CRUD
+- [x] Users CRUD
+- [x] Groups CRUD
 - [x] Docker support
 - [ ] Docker compose file
-- [ ] Mysql database support
+- [x] Mysql database support
 - [ ] PostgreSQL database support
+- [x] CI Pipeline in GitHub Actions
+- [x] Docker Hub repository
 - [ ] Base project templates
 - [ ] Java language support (To generate projects)
 - [ ] Golang language support (To generate projects)
@@ -77,4 +68,9 @@ This API has the nexts endpoints:
 - [ ] Buffalo CLI support to generate prjects based on Buffalo Framework
 - [ ] Connect to GitHub to create projects repositories
 - [ ] Connecto to Azure DevOps Repos to create projects repositories
+- [x] Open API v2 definition
+- [x] Swagger endpoint
 - [ ] User login support
+- [x] JWT Support
+- [x] Default admin user creation at first start
+- [ ] RBAC

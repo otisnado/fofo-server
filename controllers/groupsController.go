@@ -3,10 +3,10 @@ package controllers
 import (
 	"net/http"
 	"strconv"
-	"time"
 
 	"github.com/gin-gonic/gin"
 	"github.com/otisnado/fofo-server/models"
+	"github.com/otisnado/fofo-server/services"
 )
 
 // FindProjects		godoc
@@ -17,11 +17,13 @@ import (
 // @Produce			json
 // @Param			Authorization		header	string	true	"JWT without bearer"
 // @Success			200		{object}	models.SuccessFindProjects
-// @Failure			401		{object}	models.ErrorMessage
+// @Failure			401,500	{object}	models.ErrorMessage
 // @Router			/projects	[get]
 func FindGroups(c *gin.Context) {
-	var groups []models.Group
-	models.DB.Find(&groups)
+	groups, err := services.GetGroups()
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+	}
 
 	c.JSON(http.StatusOK, gin.H{"data": groups})
 }
@@ -33,19 +35,18 @@ func FindGroups(c *gin.Context) {
 // @Tags		Projects
 // @Produce		json
 // @Param		Authorization		header	string	true	"JWT without bearer"
-// @Param		id		path		int		true	"Project ID"
-// @Success		200		{object}	models.SuccessFindProject
-// @Failure		400,401	{object}	models.ErrorMessage
+// @Param		id			path		int		true	"Project ID"
+// @Success		200			{object}	models.SuccessFindProject
+// @Failure		400,401,404	{object}	models.ErrorMessage
 // @Router		/projects/{id}			[get]
 func FindGroup(c *gin.Context) {
-	var group models.Group
 	group_id, _ := strconv.Atoi(c.Param("id"))
 
-	if err := models.DB.Where("id = ?", group_id).First(&group).Error; err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "Group not found!"})
+	group, err := services.GetGroupById(uint(group_id))
+	if err != nil {
+		c.JSON(http.StatusNotFound, gin.H{"error": err.Error()})
 		return
 	}
-
 	c.JSON(http.StatusOK, gin.H{"data": group})
 }
 
@@ -56,9 +57,9 @@ func FindGroup(c *gin.Context) {
 // @Tags			Projects
 // @Produce			json
 // @Param			Authorization		header	string	true	"JWT without bearer"
-// @Param			project	body		models.Project	true	"Project data"
-// @Success			200		{object}	models.SuccessProjectCreation
-// @Failure			400,401	{object}	models.ErrorMessage
+// @Param			project		body		models.Project	true	"Project data"
+// @Success			200			{object}	models.SuccessProjectCreation
+// @Failure			400,401,500	{object}	models.ErrorMessage
 // @Router			/projects	[post]
 func CreateGroup(c *gin.Context) {
 	var input models.Group
@@ -67,9 +68,13 @@ func CreateGroup(c *gin.Context) {
 		return
 	}
 
-	group := models.Group{Name: input.Name, CreatedAt: time.Now(), UpdatedAt: input.UpdatedAt}
-	models.DB.Create(&group)
-	c.JSON(http.StatusCreated, gin.H{"data": group})
+	created, err := services.CreateGroup(&input)
+	if !created {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
+	c.JSON(http.StatusCreated, gin.H{"data": &input})
 }
 
 // UpdateProject	godoc
@@ -80,27 +85,30 @@ func CreateGroup(c *gin.Context) {
 // @Produce			json
 // @Param			Authorization		header	string	true	"JWT without bearer"
 // @Param			project			body		models.Project			true	"Project data"
-// @Success			200		{object}	models.SuccessProjectUpdate
-// @Failure			400,401	{object}	models.ErrorMessage
+// @Success			200				{object}	models.SuccessProjectUpdate
+// @Failure			400,401,404,500	{object}	models.ErrorMessage
 // @Router			/projects	[patch]
 func UpdateGroup(c *gin.Context) {
-	var group models.Group
 	group_id, _ := strconv.Atoi(c.Param("id"))
 
-	if err := models.DB.Where("id = ?", group_id).First(&group).Error; err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "Group not found!"})
-		return
-	}
-
-	var input models.Group
+	var input models.GroupUpdate
 	if err := c.ShouldBindJSON(&input); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 
-	models.DB.Model(&group).Updates(input)
+	_, err := services.GetGroupById(uint(group_id))
+	if err != nil {
+		c.JSON(http.StatusNotFound, gin.H{"error": err.Error()})
+		return
+	}
 
-	c.JSON(http.StatusOK, gin.H{"data": group})
+	groupUpdated, err := services.UpdateGroup(uint(group_id), input)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+	}
+
+	c.JSON(http.StatusOK, gin.H{"data": groupUpdated})
 }
 
 // DeleteProject	godoc
@@ -110,20 +118,24 @@ func UpdateGroup(c *gin.Context) {
 // @Tags			Projects
 // @Produce			json
 // @Param			Authorization		header	string	true	"JWT without bearer"
-// @Param			id		path		int				true	"Project ID"
-// @Success			200		{object}	models.SuccessProjectDelete
-// @Failure			400,401	{object}	models.ErrorMessage
+// @Param			id			path		int				true	"Project ID"
+// @Success			200			{object}	models.SuccessProjectDelete
+// @Failure			401,404,500	{object}	models.ErrorMessage
 // @Router			/projects/{id}	[delete]
 func DeleteGroup(c *gin.Context) {
-	var group models.Group
 	group_id, _ := strconv.Atoi(c.Param("id"))
 
-	if err := models.DB.Where("id = ?", group_id).First(&group).Error; err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "Group not found!"})
+	_, err := services.GetGroupById(uint(group_id))
+	if err != nil {
+		c.JSON(http.StatusNotFound, gin.H{"error": err.Error()})
 		return
 	}
 
-	models.DB.Delete(&group)
+	state, err := services.DeleteGroup(uint(group_id))
+	if !state {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
 
-	c.JSON(http.StatusOK, gin.H{"data": true})
+	c.JSON(http.StatusOK, gin.H{"data": state})
 }

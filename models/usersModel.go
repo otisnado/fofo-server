@@ -8,15 +8,26 @@ import (
 
 type User struct {
 	ID        uint      `json:"id" gorm:"primary_key; not null"`
-	Name      string    `json:"name"`
-	Lastname  string    `json:"lastname"`
-	Username  string    `json:"username" gorm:"not null; unique"`
-	Mail      string    `json:"mail" gorm:"not null; unique"`
-	Password  string    `json:"password"`
-	Group     int       `json:"group"`
-	State     bool      `json:"state"`
+	Name      string    `json:"name" binding:"required"`
+	Lastname  string    `json:"lastname" binding:"required"`
+	Username  string    `json:"username" gorm:"not null; unique" binding:"required"`
+	Mail      string    `json:"mail" gorm:"not null; unique" binding:"required"`
+	Password  string    `json:"password" binding:"required"`
+	Group     int       `json:"group" binding:"required"`
+	State     bool      `json:"state" binding:"required"`
 	CreatedAt time.Time `gorm:"not null"`
 	UpdatedAt time.Time `gorm:"not null"`
+}
+
+type UserUpdate struct {
+	ID       uint   `json:"id,omitempty"`
+	Name     string `json:"name,omitempty"`
+	Lastname string `json:"lastname,omitempty"`
+	Username string `json:"username,omitempty"`
+	Mail     string `json:"mail,omitempty"`
+	Password string `json:"password,omitempty"`
+	Group    int    `json:"group,omitempty"`
+	State    bool   `json:"state,omitempty"`
 }
 
 type SuccessFindUsers struct {
