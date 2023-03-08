@@ -10,6 +10,12 @@ type Language struct {
 	UpdatedAt  time.Time `json:"updated"`
 }
 
+type LanguageUpdate struct {
+	ID         int    `json:"id,omitempty"`
+	Name       string `json:"name,omitempty"`
+	Created_by uint   `json:"created_by,omitempty"`
+}
+
 type SuccessFindLanguages struct {
 	Data []Project `json:"data"`
 }
