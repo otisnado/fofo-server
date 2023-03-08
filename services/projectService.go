@@ -4,47 +4,47 @@ import (
 	"github.com/otisnado/fofo-server/models"
 )
 
-func GetGroups() ([]models.Group, error) {
-	var groups []models.Group
-	if err := models.DB.Find(&groups).Error; err != nil {
+func GetProjects() ([]models.Project, error) {
+	var projects []models.Project
+	if err := models.DB.Find(&projects).Error; err != nil {
 		return nil, err
 	}
-	return groups, nil
+	return projects, nil
 }
 
-func GetGroupById(groupId uint) (*models.Group, error) {
-	var group *models.Group
-	if err := models.DB.Where("id = ?", groupId).First(&group).Error; err != nil {
+func GetProjectById(projectId uint) (*models.Project, error) {
+	var project *models.Project
+	if err := models.DB.Where("id = ?", projectId).First(&project).Error; err != nil {
 		return nil, err
 	}
 
-	return group, nil
+	return project, nil
 }
 
-func CreateGroup(group *models.Group) (bool, error) {
-	if err := models.DB.Create(&group).Error; err != nil {
+func CreateProject(project *models.Project) (bool, error) {
+	if err := models.DB.Create(&project).Error; err != nil {
 		return false, err
 	}
 
 	return true, nil
 }
 
-func UpdateGroup(groupId uint, groupInput models.GroupUpdate) (*models.GroupUpdate, error) {
-	var group models.Group
+func UpdateProject(projectId uint, projectInput models.ProjectUpdate) (*models.ProjectUpdate, error) {
+	var project models.Project
 
-	if err := models.DB.Where("id = ?", groupId).Model(&group).Updates(groupInput).Error; err != nil {
+	if err := models.DB.Where("id = ?", projectId).Model(&project).Updates(projectInput).Error; err != nil {
 		return nil, err
 	}
 
-	return &groupInput, nil
+	return &projectInput, nil
 }
 
-func DeleteGroup(groupId uint) (bool, error) {
-	var group models.Group
-	if err := models.DB.Where("id = ?", groupId).First(&group).Error; err != nil {
+func DeleteProject(projectId uint) (bool, error) {
+	var project models.Project
+	if err := models.DB.Where("id = ?", projectId).First(&project).Error; err != nil {
 		return false, err
 	}
-	if err := models.DB.Delete(&group).Error; err != nil {
+	if err := models.DB.Delete(&project).Error; err != nil {
 		return false, err
 	}
 

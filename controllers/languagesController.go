@@ -3,10 +3,10 @@ package controllers
 import (
 	"net/http"
 	"strconv"
-	"time"
 
 	"github.com/gin-gonic/gin"
 	"github.com/otisnado/fofo-server/models"
+	"github.com/otisnado/fofo-server/services"
 )
 
 // FindLanguages		godoc
@@ -17,11 +17,13 @@ import (
 // @Produce			json
 // @Param			Authorization		header	string	true	"JWT without bearer"
 // @Success			200		{object}	models.SuccessFindLanguages
-// @Failure			401		{object}	models.ErrorMessage
+// @Failure			401,500	{object}	models.ErrorMessage
 // @Router			/languages	[get]
 func FindLanguages(c *gin.Context) {
-	var languages []models.Language
-	models.DB.Find(&languages)
+	languages, err := services.GetLanguages()
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+	}
 
 	c.JSON(http.StatusOK, gin.H{"data": languages})
 }
@@ -33,19 +35,18 @@ func FindLanguages(c *gin.Context) {
 // @Tags		Languages
 // @Produce		json
 // @Param		Authorization		header	string	true	"JWT without bearer"
-// @Param		id		path		int		true	"Language ID"
-// @Success		200		{object}	models.SuccessFindLanguage
-// @Failure		400,401	{object}	models.ErrorMessage
+// @Param		id			path		int		true	"Language ID"
+// @Success		200			{object}	models.SuccessFindLanguage
+// @Failure		400,401,404	{object}	models.ErrorMessage
 // @Router		/languages/{id}			[get]
 func FindLanguage(c *gin.Context) {
-	var language models.Language
 	language_id, _ := strconv.Atoi(c.Param("id"))
 
-	if err := models.DB.Where("id = ?", language_id).First(&language).Error; err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "Language not found!"})
+	language, err := services.GetLanguageById(uint(language_id))
+	if err != nil {
+		c.JSON(http.StatusNotFound, gin.H{"error": err.Error()})
 		return
 	}
-
 	c.JSON(http.StatusOK, gin.H{"data": language})
 }
 
@@ -57,8 +58,8 @@ func FindLanguage(c *gin.Context) {
 // @Produce		json
 // @Param		Authorization		header	string	true	"JWT without bearer"
 // @Param		language	body		models.Language		true	"Language data"
-// @Success		200		{object}	models.SuccessLanguageCreation
-// @Failure		400,401	{object}	models.ErrorMessage
+// @Success		200			{object}	models.SuccessLanguageCreation
+// @Failure		400,401,500	{object}	models.ErrorMessage
 // @Router		/languages	[post]
 func CreateLanguage(c *gin.Context) {
 	var input models.Language
@@ -67,9 +68,13 @@ func CreateLanguage(c *gin.Context) {
 		return
 	}
 
-	project := models.Language{Name: input.Name, Created_by: input.Created_by, CreatedAt: time.Now(), UpdatedAt: input.UpdatedAt}
-	models.DB.Create(&project)
-	c.JSON(http.StatusCreated, gin.H{"data": project})
+	created, err := services.CreateLanguage(&input)
+	if !created {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
+	c.JSON(http.StatusCreated, gin.H{"data": &input})
 }
 
 // UpdateLanguage	godoc
@@ -79,28 +84,31 @@ func CreateLanguage(c *gin.Context) {
 // @Tags		Languages
 // @Produce		json
 // @Param		Authorization		header	string	true	"JWT without bearer"
-// @Param		language	body		models.Language			true	"Language data"
-// @Success		200		{object}	models.SuccessLanguageUpdate
-// @Failure		400,401	{object}	models.ErrorMessage
+// @Param		language		body		models.Language			true	"Language data"
+// @Success		200				{object}	models.SuccessLanguageUpdate
+// @Failure		400,401,404,500	{object}	models.ErrorMessage
 // @Router		/languages/{id}	[patch]
 func UpdateLanguage(c *gin.Context) {
-	var language models.Language
-	project_id, _ := strconv.Atoi(c.Param("id"))
+	language_id, _ := strconv.Atoi(c.Param("id"))
 
-	if err := models.DB.Where("id = ?", project_id).First(&language).Error; err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "Language not found!"})
-		return
-	}
-
-	var input models.Language
+	var input models.LanguageUpdate
 	if err := c.ShouldBindJSON(&input); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 
-	models.DB.Model(&language).Updates(input)
+	_, err := services.GetLanguageById(uint(language_id))
+	if err != nil {
+		c.JSON(http.StatusNotFound, gin.H{"error": err.Error()})
+		return
+	}
 
-	c.JSON(http.StatusOK, gin.H{"data": language})
+	languageUpdated, err := services.UpdateLanguage(uint(language_id), input)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+	}
+
+	c.JSON(http.StatusOK, gin.H{"data": languageUpdated})
 }
 
 // DeleteLanguage	godoc
@@ -110,20 +118,24 @@ func UpdateLanguage(c *gin.Context) {
 // @Tags		Languages
 // @Produce		json
 // @Param		Authorization		header	string	true	"JWT without bearer"
-// @Param		id		path		int				true	"Language ID"
-// @Success		200		{object}	models.SuccessLanguageDelete
-// @Failure		400,401	{object}	models.ErrorMessage
+// @Param		id			path		int				true	"Language ID"
+// @Success		200			{object}	models.SuccessLanguageDelete
+// @Failure		401,404,500	{object}	models.ErrorMessage
 // @Router		/languages/{id}	[delete]
 func DeleteLanguage(c *gin.Context) {
-	var language models.Language
 	language_id, _ := strconv.Atoi(c.Param("id"))
 
-	if err := models.DB.Where("id = ?", language_id).First(&language).Error; err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "Language not found!"})
+	_, err := services.GetLanguageById(uint(language_id))
+	if err != nil {
+		c.JSON(http.StatusNotFound, gin.H{"error": err.Error()})
 		return
 	}
 
-	models.DB.Delete(&language)
+	state, err := services.DeleteLanguage(uint(language_id))
+	if !state {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
 
-	c.JSON(http.StatusOK, gin.H{"data": true})
+	c.JSON(http.StatusOK, gin.H{"data": state})
 }
