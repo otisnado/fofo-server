@@ -8,13 +8,13 @@ import (
 
 type User struct {
 	ID        uint      `json:"id" gorm:"primary_key; not null"`
-	Name      string    `json:"name"`
-	Lastname  string    `json:"lastname"`
-	Username  string    `json:"username" gorm:"not null; unique"`
-	Mail      string    `json:"mail" gorm:"not null; unique"`
-	Password  string    `json:"password"`
-	Group     int       `json:"group"`
-	State     bool      `json:"state"`
+	Name      string    `json:"name" binding:"required"`
+	Lastname  string    `json:"lastname" binding:"required"`
+	Username  string    `json:"username" gorm:"not null; unique" binding:"required"`
+	Mail      string    `json:"mail" gorm:"not null; unique" binding:"required"`
+	Password  string    `json:"password" binding:"required"`
+	Group     int       `json:"group" binding:"required"`
+	State     bool      `json:"state" binding:"required"`
 	CreatedAt time.Time `gorm:"not null"`
 	UpdatedAt time.Time `gorm:"not null"`
 }
