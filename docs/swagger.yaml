@@ -160,6 +160,11 @@ definitions:
       data:
         $ref: '#/definitions/models.User'
     type: object
+  models.TokenRefresh:
+    properties:
+      token:
+        type: string
+    type: object
   models.TokenRequest:
     properties:
       mail:
@@ -756,6 +761,36 @@ paths:
           schema:
             $ref: '#/definitions/models.ErrorMessage'
       summary: GenerateToken
+      tags:
+      - Authentication
+  /token/refresh:
+    post:
+      consumes:
+      - application/json
+      description: Refresh JWT, validate that actual JWT is ok
+      parameters:
+      - description: User credentials
+        in: body
+        name: auth
+        required: true
+        schema:
+          $ref: '#/definitions/models.TokenRefresh'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.TokenRefresh'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/models.ErrorMessage'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ErrorMessage'
+      summary: RefreshToken
       tags:
       - Authentication
   /users:

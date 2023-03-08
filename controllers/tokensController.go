@@ -1,9 +1,12 @@
 package controllers
 
 import (
+	"fmt"
 	"net/http"
+	"strconv"
 
 	"github.com/gin-gonic/gin"
+	"github.com/golang-jwt/jwt"
 	"github.com/otisnado/fofo-server/auth"
 	"github.com/otisnado/fofo-server/models"
 )
@@ -43,7 +46,55 @@ func GenerateToken(c *gin.Context) {
 		return
 	}
 
-	tokenString, err := auth.GenerateJWT(user.Mail, user.Username)
+	tokenString, err := auth.GenerateJWT(user.Mail, user.Username, user.ID)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		c.Abort()
+		return
+	}
+	c.JSON(http.StatusOK, gin.H{"token": tokenString})
+}
+
+// RefreshToken	godoc
+// @Summary			RefreshToken
+// @Schemes
+// @Description		Refresh JWT, validate that actual JWT is ok
+// @Tags			Authentication
+// @Accept			json
+// @Param			auth	body		models.TokenRefresh		true	"User credentials"
+// @Produce			json
+// @Success			200				{object}	models.TokenRefresh
+// @Failure			401,500			{object}	models.ErrorMessage
+// @Router			/token/refresh	[post]
+func RefreshToken(c *gin.Context) {
+
+	var request models.TokenRefresh
+	if err := c.ShouldBindJSON(&request); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		c.Abort()
+		return
+	}
+
+	err := auth.ValidateToken(request.Token)
+	if err != nil {
+		c.JSON(401, gin.H{"error": err.Error()})
+		return
+	}
+
+	token, _ := jwt.Parse(request.Token, func(token *jwt.Token) (interface{}, error) {
+		// Don't forget to validate the alg is what you expect:
+		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
+			return nil, fmt.Errorf("unexpected signing method: %v", token.Header["alg"])
+		}
+		return token, nil
+	})
+
+	claims := token.Claims.(jwt.MapClaims)
+	userMail := fmt.Sprint(claims["mail"])
+	username := fmt.Sprint(claims["username"])
+	string_userID := fmt.Sprint(claims["id"])
+	uint_userId, _ := strconv.Atoi(string_userID)
+	tokenString, err := auth.GenerateJWT(userMail, username, uint(uint_userId))
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		c.Abort()

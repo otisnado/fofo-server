@@ -24,6 +24,10 @@ func InitRouter() *gin.Engine {
 
 		secure := api.Group("/").Use(middlewares.Auth())
 		{
+
+			// Refresh JWT
+			secure.POST("/token/refresh", controllers.RefreshToken)
+
 			// Find all projects
 			secure.GET("/projects", controllers.FindProjects)
 
