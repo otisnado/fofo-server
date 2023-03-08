@@ -46,6 +46,12 @@ const docTemplate = `{
                         "schema": {
                             "$ref": "#/definitions/models.ErrorMessage"
                         }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/models.ErrorMessage"
+                        }
                     }
                 }
             },
@@ -91,6 +97,12 @@ const docTemplate = `{
                     },
                     "401": {
                         "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/models.ErrorMessage"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
                         "schema": {
                             "$ref": "#/definitions/models.ErrorMessage"
                         }
@@ -142,6 +154,12 @@ const docTemplate = `{
                         "schema": {
                             "$ref": "#/definitions/models.ErrorMessage"
                         }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/models.ErrorMessage"
+                        }
                     }
                 }
             },
@@ -177,14 +195,20 @@ const docTemplate = `{
                             "$ref": "#/definitions/models.SuccessGroupDelete"
                         }
                     },
-                    "400": {
-                        "description": "Bad Request",
+                    "401": {
+                        "description": "Unauthorized",
                         "schema": {
                             "$ref": "#/definitions/models.ErrorMessage"
                         }
                     },
-                    "401": {
-                        "description": "Unauthorized",
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/models.ErrorMessage"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
                         "schema": {
                             "$ref": "#/definitions/models.ErrorMessage"
                         }
@@ -236,6 +260,18 @@ const docTemplate = `{
                         "schema": {
                             "$ref": "#/definitions/models.ErrorMessage"
                         }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/models.ErrorMessage"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/models.ErrorMessage"
+                        }
                     }
                 }
             }
@@ -268,6 +304,12 @@ const docTemplate = `{
                     },
                     "401": {
                         "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/models.ErrorMessage"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
                         "schema": {
                             "$ref": "#/definitions/models.ErrorMessage"
                         }
@@ -319,6 +361,12 @@ const docTemplate = `{
                         "schema": {
                             "$ref": "#/definitions/models.ErrorMessage"
                         }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/models.ErrorMessage"
+                        }
                     }
                 }
             }
@@ -367,6 +415,12 @@ const docTemplate = `{
                         "schema": {
                             "$ref": "#/definitions/models.ErrorMessage"
                         }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/models.ErrorMessage"
+                        }
                     }
                 }
             },
@@ -402,14 +456,20 @@ const docTemplate = `{
                             "$ref": "#/definitions/models.SuccessLanguageDelete"
                         }
                     },
-                    "400": {
-                        "description": "Bad Request",
+                    "401": {
+                        "description": "Unauthorized",
                         "schema": {
                             "$ref": "#/definitions/models.ErrorMessage"
                         }
                     },
-                    "401": {
-                        "description": "Unauthorized",
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/models.ErrorMessage"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
                         "schema": {
                             "$ref": "#/definitions/models.ErrorMessage"
                         }
@@ -461,6 +521,18 @@ const docTemplate = `{
                         "schema": {
                             "$ref": "#/definitions/models.ErrorMessage"
                         }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/models.ErrorMessage"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/models.ErrorMessage"
+                        }
                     }
                 }
             }
@@ -493,6 +565,12 @@ const docTemplate = `{
                     },
                     "401": {
                         "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/models.ErrorMessage"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
                         "schema": {
                             "$ref": "#/definitions/models.ErrorMessage"
                         }
@@ -544,6 +622,12 @@ const docTemplate = `{
                         "schema": {
                             "$ref": "#/definitions/models.ErrorMessage"
                         }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/models.ErrorMessage"
+                        }
                     }
                 }
             },
@@ -589,6 +673,18 @@ const docTemplate = `{
                     },
                     "401": {
                         "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/models.ErrorMessage"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/models.ErrorMessage"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
                         "schema": {
                             "$ref": "#/definitions/models.ErrorMessage"
                         }
@@ -640,6 +736,12 @@ const docTemplate = `{
                         "schema": {
                             "$ref": "#/definitions/models.ErrorMessage"
                         }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/models.ErrorMessage"
+                        }
                     }
                 }
             },
@@ -675,14 +777,20 @@ const docTemplate = `{
                             "$ref": "#/definitions/models.SuccessProjectDelete"
                         }
                     },
-                    "400": {
-                        "description": "Bad Request",
+                    "401": {
+                        "description": "Unauthorized",
                         "schema": {
                             "$ref": "#/definitions/models.ErrorMessage"
                         }
                     },
-                    "401": {
-                        "description": "Unauthorized",
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/models.ErrorMessage"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
                         "schema": {
                             "$ref": "#/definitions/models.ErrorMessage"
                         }
@@ -1009,6 +1117,9 @@ const docTemplate = `{
         },
         "models.Group": {
             "type": "object",
+            "required": [
+                "name"
+            ],
             "properties": {
                 "createdAt": {
                     "type": "string"
@@ -1026,6 +1137,10 @@ const docTemplate = `{
         },
         "models.Language": {
             "type": "object",
+            "required": [
+                "created_by",
+                "name"
+            ],
             "properties": {
                 "created": {
                     "type": "string"
@@ -1046,8 +1161,13 @@ const docTemplate = `{
         },
         "models.Project": {
             "type": "object",
+            "required": [
+                "created_by",
+                "language",
+                "name"
+            ],
             "properties": {
-                "created": {
+                "createdAt": {
                     "type": "string"
                 },
                 "created_by": {
@@ -1062,7 +1182,7 @@ const docTemplate = `{
                 "name": {
                     "type": "string"
                 },
-                "updated": {
+                "updatedAt": {
                     "type": "string"
                 }
             }
@@ -1260,6 +1380,15 @@ const docTemplate = `{
         },
         "models.User": {
             "type": "object",
+            "required": [
+                "group",
+                "lastname",
+                "mail",
+                "name",
+                "password",
+                "state",
+                "username"
+            ],
             "properties": {
                 "createdAt": {
                     "type": "string"
