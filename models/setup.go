@@ -11,14 +11,7 @@ import (
 var DB *gorm.DB
 
 func ConnectDatabase() {
-	dbhost := os.Getenv("DBHOST")
-	dbport := os.Getenv("DBPORT")
-	dbname := os.Getenv("DBNAME")
-	dbuser := os.Getenv("DBUSER")
-	dbpass := os.Getenv("DBPASS")
-	dbtz := os.Getenv("DBTZ")
-
-	dsn := dbuser + ":" + dbpass + "@tcp(" + dbhost + ":" + dbport + ")/" + dbname + "?parseTime=true&loc=" + dbtz
+	dsn := os.Getenv("DSN")
 	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
 	if err != nil {
 		log.Fatalln(err)
