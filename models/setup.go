@@ -17,7 +17,7 @@ func ConnectDatabase() {
 		log.Fatalln(err)
 	}
 
-	err = db.AutoMigrate(Project{}, Language{}, User{}, Group{})
+	err = db.AutoMigrate(Project{}, Language{}, User{}, Group{}, Role{}, Policy{})
 	if err != nil {
 		return
 	}

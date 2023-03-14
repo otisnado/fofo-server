@@ -9,6 +9,7 @@ import (
 	"github.com/golang-jwt/jwt"
 	"github.com/otisnado/fofo-server/auth"
 	"github.com/otisnado/fofo-server/models"
+	"github.com/otisnado/fofo-server/services"
 )
 
 // GenerateToken	godoc
@@ -46,7 +47,7 @@ func GenerateToken(c *gin.Context) {
 		return
 	}
 
-	tokenString, err := auth.GenerateJWT(user.Mail, user.Username, user.ID)
+	tokenString, err := auth.GenerateJWT(user.Mail, user.Username, user.ID, user.Role)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		c.Abort()
@@ -75,7 +76,7 @@ func RefreshToken(c *gin.Context) {
 		return
 	}
 
-	err := auth.ValidateToken(request.Token)
+	_, err := auth.ValidateToken(request.Token)
 	if err != nil {
 		c.JSON(401, gin.H{"error": err.Error()})
 		return
@@ -90,11 +91,15 @@ func RefreshToken(c *gin.Context) {
 	})
 
 	claims := token.Claims.(jwt.MapClaims)
-	userMail := fmt.Sprint(claims["mail"])
-	username := fmt.Sprint(claims["username"])
 	string_userID := fmt.Sprint(claims["id"])
 	uint_userId, _ := strconv.Atoi(string_userID)
-	tokenString, err := auth.GenerateJWT(userMail, username, uint(uint_userId))
+	user, err := services.GetUserById(uint(uint_userId))
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		c.Abort()
+		return
+	}
+	tokenString, err := auth.GenerateJWT(user.Mail, user.Username, user.ID, user.Role)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		c.Abort()
