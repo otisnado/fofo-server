@@ -36,7 +36,7 @@ func FindRoles(c *gin.Context) {
 // @Produce		json
 // @Param		Authorization		header	string	true	"JWT without bearer"
 // @Param		id			path		int		true	"Role ID"
-// @Success		200			{object}	models.SuccessFindRole
+// @Success		200			{object}	models.SuccessFindRoles
 // @Failure		400,401,404	{object}	models.ErrorMessage
 // @Router		/roles/{id}			[get]
 func FindRole(c *gin.Context) {
