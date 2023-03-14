@@ -24,4 +24,5 @@ jobs:
         goos: linux
         goarch: amd64
         binary_name: fofo-server
+        target_branch: main
 
