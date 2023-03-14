@@ -8,3 +8,7 @@ type TokenRequest struct {
 type TokenResponse struct {
 	Token string `json:"token"`
 }
+
+type TokenRefresh struct {
+	Token string `json:"token"`
+}

@@ -22,8 +22,12 @@ func InitRouter() *gin.Engine {
 		// Generate token
 		router.POST("/api/v1/token", controllers.GenerateToken)
 
+		// Refresh JWT
+		router.POST("/api/v1/token/refresh", controllers.RefreshToken)
+
 		secure := api.Group("/").Use(middlewares.Auth())
 		{
+
 			// Find all projects
 			secure.GET("/projects", controllers.FindProjects)
 
@@ -89,6 +93,43 @@ func InitRouter() *gin.Engine {
 
 			// Delete a group --> id is required
 			secure.DELETE("/groups/:id", controllers.DeleteGroup)
+
+			/* Roles routes */
+
+			// Find all roles registered
+			secure.GET("/roles", controllers.FindRoles)
+
+			// Find a specific role by its id
+			secure.GET("/roles/:id", controllers.FindRole)
+
+			// Create a role
+			secure.POST("/roles", controllers.CreateRole)
+
+			// Update data for a role --> id is required
+			secure.PATCH("/roles/:id", controllers.UpdateRole)
+
+			// Delete a role --> id is required
+			secure.DELETE("/roles/:id", controllers.DeleteRole)
+
+			// Find policies associated to given role
+			secure.GET("/roles/policies/:id", controllers.FindRolesPolicies)
+
+			/* Policies routes */
+
+			// Find all policies registered
+			secure.GET("/policies", controllers.FindPolicies)
+
+			// Find a specific policy by its id
+			secure.GET("/policies/:id", controllers.FindPolicy)
+
+			// Create a policy
+			secure.POST("/policies", controllers.CreatePolicy)
+
+			// Update data for a policy --> id is required
+			secure.PATCH("/policies/:id", controllers.UpdatePolicy)
+
+			// Delete a policy --> id is required
+			secure.DELETE("/policies/:id", controllers.DeletePolicy)
 		}
 	}
 

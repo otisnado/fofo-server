@@ -8,6 +8,8 @@ import (
 
 func main() {
 	models.ConnectDatabase()
+	utils.RoleAdminCreation()
+	utils.PolicyAdminCreation()
 	utils.GroupAdminCreation()
 	utils.AdminCreation()
 	router := routes.InitRouter()

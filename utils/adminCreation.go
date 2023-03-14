@@ -16,6 +16,7 @@ func AdminCreation() {
 	adminUser.Mail = "admin@fofo-server.com"
 	adminUser.Username = "root"
 	adminUser.Password = "admin"
+	adminUser.Role = 1
 	adminUser.Group = 1
 	adminUser.State = true
 
@@ -34,7 +35,7 @@ func AdminCreation() {
 		return
 	}
 
-	user := models.User{Name: adminUser.Name, Lastname: adminUser.Lastname, Username: adminUser.Username, Mail: adminUser.Mail, Password: adminUser.Password, Group: adminUser.Group, State: adminUser.State, CreatedAt: time.Now(), UpdatedAt: adminUser.UpdatedAt}
+	user := models.User{Name: adminUser.Name, Lastname: adminUser.Lastname, Username: adminUser.Username, Mail: adminUser.Mail, Password: adminUser.Password, Role: adminUser.Role, Group: adminUser.Group, State: adminUser.State, CreatedAt: time.Now(), UpdatedAt: adminUser.UpdatedAt}
 	models.DB.Create(&user)
 }
 
@@ -48,4 +49,28 @@ func GroupAdminCreation() {
 	group := models.Group{Name: groupAdmin.Name, CreatedAt: time.Now(), UpdatedAt: groupAdmin.UpdatedAt}
 	models.DB.Create(&group)
 
+}
+
+func RoleAdminCreation() {
+	var roleAdmin models.Role
+	roleAdmin.Name = "Administrators"
+	result := models.DB.Where("name = ?", roleAdmin.Name).Find(&roleAdmin)
+	if result.RowsAffected > 0 {
+		return
+	}
+	role := models.Role{Name: roleAdmin.Name}
+	models.DB.Create(&role)
+}
+
+func PolicyAdminCreation() {
+	var policyAdmin models.Policy
+	policyAdmin.Name = "Administrators"
+	policyAdmin.Path = "/*"
+	policyAdmin.AuthorizedRole = 1
+	result := models.DB.Where("name = ?", policyAdmin.Name).Find(&policyAdmin)
+	if result.RowsAffected > 0 {
+		return
+	}
+	policy := models.Policy{Name: policyAdmin.Name, Path: policyAdmin.Path, AuthorizedRole: policyAdmin.AuthorizedRole}
+	models.DB.Create(&policy)
 }
