@@ -27,7 +27,7 @@ type UserUpdate struct {
 	Username string `json:"username,omitempty"`
 	Mail     string `json:"mail,omitempty"`
 	Password string `json:"password,omitempty"`
-	Role     uint   `json:"roles,omitempty"`
+	Role     string `json:"role,omitempty"`
 	Group    int    `json:"group,omitempty"`
 	State    bool   `json:"state,omitempty"`
 }

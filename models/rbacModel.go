@@ -35,10 +35,11 @@ type Policy struct {
 }
 
 type PolicyUpdate struct {
-	ID             uint   `json:"id,omitempty"`
-	Name           string `json:"name,omitempty"`
-	Path           string `json:"path,omitempty"`
-	AuthorizedRole uint   `json:"authorizedRole,omitempty"`
+	ID                uint   `json:"id,omitempty"`
+	Name              string `json:"name,omitempty"`
+	Path              string `json:"path,omitempty"`
+	AuthorizedMethods string `json:"authorizedMethods,omitempty"`
+	AuthorizedRole    uint   `json:"authorizedRole,omitempty"`
 }
 
 type SuccessFindPolicies struct {
