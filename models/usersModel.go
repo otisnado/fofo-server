@@ -13,7 +13,7 @@ type User struct {
 	Username  string    `json:"username" gorm:"not null; unique" binding:"required"`
 	Mail      string    `json:"mail" gorm:"not null; unique" binding:"required"`
 	Password  string    `json:"password" binding:"required"`
-	Role      uint      `json:"role" binding:"required"`
+	Role      string    `json:"role" binding:"required"`
 	Group     int       `json:"group" binding:"required"`
 	State     bool      `json:"state" binding:"required"`
 	CreatedAt time.Time `gorm:"not null"`
