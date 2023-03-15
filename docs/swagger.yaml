@@ -33,6 +33,21 @@ definitions:
     - created_by
     - name
     type: object
+  models.Policy:
+    properties:
+      authorizedRole:
+        type: integer
+      id:
+        type: integer
+      name:
+        type: string
+      path:
+        type: string
+    required:
+    - authorizedRole
+    - name
+    - path
+    type: object
   models.Project:
     properties:
       created_by:
@@ -50,6 +65,15 @@ definitions:
     required:
     - created_by
     - language
+    - name
+    type: object
+  models.Role:
+    properties:
+      id:
+        type: integer
+      name:
+        type: string
+    required:
     - name
     type: object
   models.SuccessFindGroup:
@@ -76,6 +100,13 @@ definitions:
           $ref: '#/definitions/models.Project'
         type: array
     type: object
+  models.SuccessFindPolicies:
+    properties:
+      data:
+        items:
+          $ref: '#/definitions/models.Policy'
+        type: array
+    type: object
   models.SuccessFindProject:
     properties:
       data:
@@ -86,6 +117,13 @@ definitions:
       data:
         items:
           $ref: '#/definitions/models.Project'
+        type: array
+    type: object
+  models.SuccessFindRoles:
+    properties:
+      data:
+        items:
+          $ref: '#/definitions/models.Role'
         type: array
     type: object
   models.SuccessFindUser:
@@ -130,6 +168,21 @@ definitions:
       data:
         $ref: '#/definitions/models.Project'
     type: object
+  models.SuccessPolicyCreation:
+    properties:
+      data:
+        $ref: '#/definitions/models.Policy'
+    type: object
+  models.SuccessPolicyDelete:
+    properties:
+      data:
+        type: boolean
+    type: object
+  models.SuccessPolicyUpdate:
+    properties:
+      data:
+        $ref: '#/definitions/models.Policy'
+    type: object
   models.SuccessProjectCreation:
     properties:
       data:
@@ -144,6 +197,21 @@ definitions:
     properties:
       data:
         $ref: '#/definitions/models.Project'
+    type: object
+  models.SuccessRoleCreation:
+    properties:
+      data:
+        $ref: '#/definitions/models.Role'
+    type: object
+  models.SuccessRoleDelete:
+    properties:
+      data:
+        type: boolean
+    type: object
+  models.SuccessRoleUpdate:
+    properties:
+      data:
+        $ref: '#/definitions/models.Role'
     type: object
   models.SuccessUserCreation:
     properties:
@@ -193,6 +261,8 @@ definitions:
         type: string
       password:
         type: string
+      role:
+        type: integer
       state:
         type: boolean
       updatedAt:
@@ -205,6 +275,7 @@ definitions:
     - mail
     - name
     - password
+    - role
     - state
     - username
     type: object
@@ -559,6 +630,180 @@ paths:
       summary: UpdateLanguage
       tags:
       - Languages
+  /policies:
+    get:
+      description: Bulk all fofo-server's policies
+      parameters:
+      - description: JWT without bearer
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.SuccessFindPolicies'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/models.ErrorMessage'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ErrorMessage'
+      summary: FindPolicies
+      tags:
+      - Policies
+    post:
+      description: Create policy with models.Policy model
+      parameters:
+      - description: JWT without bearer
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: Policy data
+        in: body
+        name: policy
+        required: true
+        schema:
+          $ref: '#/definitions/models.Policy'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.SuccessPolicyCreation'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.ErrorMessage'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/models.ErrorMessage'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ErrorMessage'
+      summary: CreatePolicy
+      tags:
+      - Policies
+  /policies/{id}:
+    delete:
+      description: Delete policy with using id
+      parameters:
+      - description: JWT without bearer
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: Policy ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.SuccessPolicyDelete'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/models.ErrorMessage'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.ErrorMessage'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ErrorMessage'
+      summary: DeletePolicy
+      tags:
+      - Policies
+    get:
+      description: Find a policy with given id in path
+      parameters:
+      - description: JWT without bearer
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: Policy ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.SuccessFindPolicies'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.ErrorMessage'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/models.ErrorMessage'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.ErrorMessage'
+      summary: FindPolicy
+      tags:
+      - Policies
+    patch:
+      description: Update policy with models.Policy model
+      parameters:
+      - description: JWT without bearer
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: Policy data
+        in: body
+        name: policy
+        required: true
+        schema:
+          $ref: '#/definitions/models.Policy'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.SuccessPolicyUpdate'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.ErrorMessage'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/models.ErrorMessage'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.ErrorMessage'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ErrorMessage'
+      summary: UpdatePolicy
+      tags:
+      - Policies
   /projects:
     get:
       description: Bulk all nepackage's projects
@@ -733,6 +978,180 @@ paths:
       summary: FindProject
       tags:
       - Projects
+  /roles:
+    get:
+      description: Bulk all fofo-server's roles
+      parameters:
+      - description: JWT without bearer
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.SuccessFindRoles'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/models.ErrorMessage'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ErrorMessage'
+      summary: FindRoles
+      tags:
+      - Roles
+    post:
+      description: Create role with models.Role model
+      parameters:
+      - description: JWT without bearer
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: Role data
+        in: body
+        name: role
+        required: true
+        schema:
+          $ref: '#/definitions/models.Role'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.SuccessRoleCreation'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.ErrorMessage'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/models.ErrorMessage'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ErrorMessage'
+      summary: CreateRole
+      tags:
+      - Roles
+  /roles/{id}:
+    delete:
+      description: Delete role with using id
+      parameters:
+      - description: JWT without bearer
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: Role ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.SuccessRoleDelete'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/models.ErrorMessage'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.ErrorMessage'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ErrorMessage'
+      summary: DeleteRole
+      tags:
+      - Roles
+    get:
+      description: Find all policies associated to given role with role id in path
+      parameters:
+      - description: JWT without bearer
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: Role ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.SuccessFindPolicies'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.ErrorMessage'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/models.ErrorMessage'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.ErrorMessage'
+      summary: FindRolesPolicies
+      tags:
+      - Roles
+    patch:
+      description: Update role with models.Role model
+      parameters:
+      - description: JWT without bearer
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: Role data
+        in: body
+        name: role
+        required: true
+        schema:
+          $ref: '#/definitions/models.Role'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.SuccessRoleUpdate'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.ErrorMessage'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/models.ErrorMessage'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.ErrorMessage'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ErrorMessage'
+      summary: UpdateRole
+      tags:
+      - Roles
   /token:
     post:
       consumes:

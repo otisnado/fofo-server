@@ -16,7 +16,7 @@ func AdminCreation() {
 	adminUser.Mail = "admin@nepackage.org"
 	adminUser.Username = "root"
 	adminUser.Password = "admin"
-	adminUser.Role = 1
+	adminUser.Role = "1"
 	adminUser.Group = 1
 	adminUser.State = true
 

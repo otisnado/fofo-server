@@ -13,7 +13,7 @@ type User struct {
 	Username  string    `json:"username" gorm:"not null; unique" binding:"required"`
 	Mail      string    `json:"mail" gorm:"not null; unique" binding:"required"`
 	Password  string    `json:"password" binding:"required"`
-	Role      uint      `json:"role" binding:"required"`
+	Role      string    `json:"role" binding:"required"`
 	Group     int       `json:"group" binding:"required"`
 	State     bool      `json:"state" binding:"required"`
 	CreatedAt time.Time `gorm:"not null"`
@@ -27,7 +27,7 @@ type UserUpdate struct {
 	Username string `json:"username,omitempty"`
 	Mail     string `json:"mail,omitempty"`
 	Password string `json:"password,omitempty"`
-	Role     uint   `json:"roles,omitempty"`
+	Role     string `json:"role,omitempty"`
 	Group    int    `json:"group,omitempty"`
 	State    bool   `json:"state,omitempty"`
 }

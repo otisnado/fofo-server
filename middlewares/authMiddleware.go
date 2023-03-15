@@ -33,7 +33,8 @@ func Auth() gin.HandlerFunc {
 
 		/* Compare path requested with path in AuthorizedRoles */
 		pathRequested := c.Request.URL.Path
-		authorized = utils.ValidateRolePermissions(pathRequested, userRole)
+		methodRequested := c.Request.Method
+		authorized = utils.ValidateRolePermissions(pathRequested, methodRequested, userRole)
 
 		if !authorized {
 			c.JSON(http.StatusForbidden, gin.H{"error": "Your user's role is not authorized"})

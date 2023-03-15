@@ -36,7 +36,7 @@ func FindPolicies(c *gin.Context) {
 // @Produce		json
 // @Param		Authorization		header	string	true	"JWT without bearer"
 // @Param		id			path		int		true	"Policy ID"
-// @Success		200			{object}	models.SuccessFindPolicy
+// @Success		200			{object}	models.SuccessFindPolicies
 // @Failure		400,401,404	{object}	models.ErrorMessage
 // @Router		/policies/{id}			[get]
 func FindPolicy(c *gin.Context) {
