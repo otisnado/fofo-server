@@ -1,4 +1,4 @@
-# Fofo Server
+# Nepackage
 
 A server to have main place where start a new project
 
@@ -25,7 +25,7 @@ git clone {repository}
 ```
 2. cd to direcotory
 ```
-cd ./fofo-server
+cd ./nepackage
 ```
 
 3. Donwloag dependencies
@@ -43,9 +43,9 @@ gow run main.go
 ```
 
 ## Start Docker container
-You can find image on [Docker Hub](https://hub.docker.com/r/otisnado/fofo-server)
+You can find image on [Docker Hub](https://hub.docker.com/r/otisnado/nepackage)
 ```
-docker run -d -p 9090:8080 -e DBHOST=localhost -e DBPORT=3306 -e DBNAME=fofo -e DBUSER=root -e DBPASS=1234 -e DBTZ=America%2FEl_Salvador --name fofo-server otisnado/fofo-server:latest
+docker run -d -p 9090:8080 -e DBHOST=localhost -e DBPORT=3306 -e DBNAME=fofo -e DBUSER=root -e DBPASS=1234 -e DBTZ=America%2FEl_Salvador --name nepackage otisnado/nepackage:latest
 ```
 
 ## List of features

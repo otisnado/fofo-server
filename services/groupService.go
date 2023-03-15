@@ -1,7 +1,7 @@
 package services
 
 import (
-	"github.com/otisnado/fofo-server/models"
+	"github.com/otisnado/nepackage/models"
 )
 
 func GetGroups() ([]models.Group, error) {

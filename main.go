@@ -1,9 +1,9 @@
 package main
 
 import (
-	"github.com/otisnado/fofo-server/models"
-	"github.com/otisnado/fofo-server/routes"
-	"github.com/otisnado/fofo-server/utils"
+	"github.com/otisnado/nepackage/models"
+	"github.com/otisnado/nepackage/routes"
+	"github.com/otisnado/nepackage/utils"
 )
 
 func main() {

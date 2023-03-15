@@ -2,9 +2,9 @@ package routes
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/otisnado/fofo-server/controllers"
-	"github.com/otisnado/fofo-server/docs"
-	"github.com/otisnado/fofo-server/middlewares"
+	"github.com/otisnado/nepackage/controllers"
+	"github.com/otisnado/nepackage/docs"
+	"github.com/otisnado/nepackage/middlewares"
 	swaggerfiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
 )

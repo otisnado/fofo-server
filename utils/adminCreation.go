@@ -5,7 +5,7 @@ import (
 	"log"
 	"time"
 
-	"github.com/otisnado/fofo-server/models"
+	"github.com/otisnado/nepackage/models"
 )
 
 func AdminCreation() {
@@ -13,7 +13,7 @@ func AdminCreation() {
 	var adminUser models.User
 	adminUser.Name = "Admin"
 	adminUser.Lastname = "System"
-	adminUser.Mail = "admin@fofo-server.com"
+	adminUser.Mail = "admin@nepackage.org"
 	adminUser.Username = "root"
 	adminUser.Password = "admin"
 	adminUser.Role = 1

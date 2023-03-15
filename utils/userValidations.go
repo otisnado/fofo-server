@@ -3,7 +3,7 @@ package utils
 import (
 	"errors"
 
-	"github.com/otisnado/fofo-server/models"
+	"github.com/otisnado/nepackage/models"
 )
 
 func CheckIfMailExists(mailInput string) error {

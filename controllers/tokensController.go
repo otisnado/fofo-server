@@ -7,9 +7,9 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/golang-jwt/jwt"
-	"github.com/otisnado/fofo-server/auth"
-	"github.com/otisnado/fofo-server/models"
-	"github.com/otisnado/fofo-server/services"
+	"github.com/otisnado/nepackage/auth"
+	"github.com/otisnado/nepackage/models"
+	"github.com/otisnado/nepackage/services"
 )
 
 // GenerateToken	godoc

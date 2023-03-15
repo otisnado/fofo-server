@@ -1,4 +1,4 @@
-module github.com/otisnado/fofo-server
+module github.com/otisnado/nepackage
 
 go 1.18
 

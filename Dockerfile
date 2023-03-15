@@ -24,6 +24,6 @@ WORKDIR /home/fofo
 
 ENV BDHOST=mysql DBPORT=3306 DBNAME=fofo DBUSER=root DBPASS=1234
 
-COPY --from=build /src/fofo-server /home/fofo/fofo-server
+COPY --from=build /src/nepackage /home/fofo/nepackage
 
-ENTRYPOINT [ "/home/fofo/fofo-server" ]
+ENTRYPOINT [ "/home/fofo/nepackage" ]

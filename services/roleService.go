@@ -1,6 +1,6 @@
 package services
 
-import "github.com/otisnado/fofo-server/models"
+import "github.com/otisnado/nepackage/models"
 
 func GetRoles() ([]models.Role, error) {
 	var roles []models.Role

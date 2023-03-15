@@ -2,7 +2,7 @@ package utils
 
 import (
 	"github.com/gobwas/glob"
-	"github.com/otisnado/fofo-server/services"
+	"github.com/otisnado/nepackage/services"
 )
 
 func ValidateRolePermissions(urlPathRequested string, roleId uint) bool {

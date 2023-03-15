@@ -5,14 +5,14 @@ import (
 	"strconv"
 
 	"github.com/gin-gonic/gin"
-	"github.com/otisnado/fofo-server/models"
-	"github.com/otisnado/fofo-server/services"
+	"github.com/otisnado/nepackage/models"
+	"github.com/otisnado/nepackage/services"
 )
 
 // FindRoles		godoc
 // @Summary			FindRoles
 // @Schemes
-// @Description		Bulk all fofo-server's roles
+// @Description		Bulk all nepackage's roles
 // @Tags			Roles
 // @Produce			json
 // @Param			Authorization		header	string	true	"JWT without bearer"

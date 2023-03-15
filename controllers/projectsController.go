@@ -5,14 +5,14 @@ import (
 	"strconv"
 
 	"github.com/gin-gonic/gin"
-	"github.com/otisnado/fofo-server/models"
-	"github.com/otisnado/fofo-server/services"
+	"github.com/otisnado/nepackage/models"
+	"github.com/otisnado/nepackage/services"
 )
 
 // FindGroups		godoc
 // @Summary			FindGroups
 // @Schemes
-// @Description		Bulk all fofo-server's groups
+// @Description		Bulk all nepackage's groups
 // @Tags			Groups
 // @Produce			json
 // @Param			Authorization		header	string	true	"JWT without bearer"

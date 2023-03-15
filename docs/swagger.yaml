@@ -213,7 +213,7 @@ info:
 paths:
   /groups:
     get:
-      description: Bulk all fofo-server's groups
+      description: Bulk all nepackage's groups
       parameters:
       - description: JWT without bearer
         in: header
@@ -387,7 +387,7 @@ paths:
       - Groups
   /languages:
     get:
-      description: Bulk all fofo-server's languages
+      description: Bulk all nepackage's languages
       parameters:
       - description: JWT without bearer
         in: header
@@ -561,7 +561,7 @@ paths:
       - Languages
   /projects:
     get:
-      description: Bulk all fofo-server's projects
+      description: Bulk all nepackage's projects
       parameters:
       - description: JWT without bearer
         in: header
@@ -795,7 +795,7 @@ paths:
       - Authentication
   /users:
     get:
-      description: Bulk all fofo-server's users
+      description: Bulk all nepackage's users
       parameters:
       - description: JWT without bearer
         in: header

@@ -23,6 +23,6 @@ jobs:
         github_token: ${{ secrets.GH_TOKEN }}
         goos: linux
         goarch: amd64
-        binary_name: fofo-server
+        binary_name: nepackage
         target_branch: main
 

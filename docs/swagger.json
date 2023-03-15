@@ -6,7 +6,7 @@
     "paths": {
         "/groups": {
             "get": {
-                "description": "Bulk all fofo-server's groups",
+                "description": "Bulk all nepackage's groups",
                 "produces": [
                     "application/json"
                 ],
@@ -267,7 +267,7 @@
         },
         "/languages": {
             "get": {
-                "description": "Bulk all fofo-server's languages",
+                "description": "Bulk all nepackage's languages",
                 "produces": [
                     "application/json"
                 ],
@@ -528,7 +528,7 @@
         },
         "/projects": {
             "get": {
-                "description": "Bulk all fofo-server's projects",
+                "description": "Bulk all nepackage's projects",
                 "produces": [
                     "application/json"
                 ],
@@ -881,7 +881,7 @@
         },
         "/users": {
             "get": {
-                "description": "Bulk all fofo-server's users",
+                "description": "Bulk all nepackage's users",
                 "produces": [
                     "application/json"
                 ],

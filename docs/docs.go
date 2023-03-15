@@ -17,7 +17,7 @@ const docTemplate = `{
     "paths": {
         "/groups": {
             "get": {
-                "description": "Bulk all fofo-server's groups",
+                "description": "Bulk all nepackage's groups",
                 "produces": [
                     "application/json"
                 ],
@@ -278,7 +278,7 @@ const docTemplate = `{
         },
         "/languages": {
             "get": {
-                "description": "Bulk all fofo-server's languages",
+                "description": "Bulk all nepackage's languages",
                 "produces": [
                     "application/json"
                 ],
@@ -539,7 +539,7 @@ const docTemplate = `{
         },
         "/projects": {
             "get": {
-                "description": "Bulk all fofo-server's projects",
+                "description": "Bulk all nepackage's projects",
                 "produces": [
                     "application/json"
                 ],
@@ -892,7 +892,7 @@ const docTemplate = `{
         },
         "/users": {
             "get": {
-                "description": "Bulk all fofo-server's users",
+                "description": "Bulk all nepackage's users",
                 "produces": [
                     "application/json"
                 ],

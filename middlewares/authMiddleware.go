@@ -4,8 +4,8 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
-	"github.com/otisnado/fofo-server/auth"
-	"github.com/otisnado/fofo-server/utils"
+	"github.com/otisnado/nepackage/auth"
+	"github.com/otisnado/nepackage/utils"
 )
 
 func Auth() gin.HandlerFunc {
