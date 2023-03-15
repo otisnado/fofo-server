@@ -5,7 +5,7 @@ import (
 	"github.com/otisnado/fofo-server/services"
 )
 
-func ValidateRolePermissions(urlPathRequested string, roleId uint) bool {
+func ValidateRolePermissions(urlPathRequested string, methodRequested string, roleId uint) bool {
 
 	var g glob.Glob
 
@@ -19,7 +19,14 @@ func ValidateRolePermissions(urlPathRequested string, roleId uint) bool {
 	for _, policy := range policies {
 		g = glob.MustCompile(policy.Path)
 		if g.Match(urlPathRequested) {
-			return true
+			authorizedMethods := ConvertStringToStruct(policy.AuthorizedMethods)
+			for _, method := range authorizedMethods {
+				g = glob.MustCompile(method)
+				if g.Match(methodRequested) {
+					return true
+				}
+			}
+
 		}
 	}
 
