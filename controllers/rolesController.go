@@ -139,25 +139,3 @@ func DeleteRole(c *gin.Context) {
 
 	c.JSON(http.StatusOK, gin.H{"data": state})
 }
-
-// FindRolesPolicies	godoc
-// @Summary				FindRolesPolicies
-// @Schemes
-// @Description	Find all policies associated to given role with role id in path
-// @Tags		Roles
-// @Produce		json
-// @Param		Authorization		header	string	true	"JWT without bearer"
-// @Param		id			path		int		true	"Role ID"
-// @Success		200			{object}	models.SuccessFindPolicies
-// @Failure		400,401,404	{object}	models.ErrorMessage
-// @Router		/roles/{id}			[get]
-func FindRolesPolicies(c *gin.Context) {
-	role_id, _ := strconv.Atoi(c.Param("id"))
-
-	policies, err := services.GetPoliciesByRoleId(uint(role_id))
-	if err != nil {
-		c.JSON(http.StatusNotFound, gin.H{"error": err.Error()})
-		return
-	}
-	c.JSON(http.StatusOK, gin.H{"data": policies})
-}

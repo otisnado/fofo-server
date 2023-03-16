@@ -1,6 +1,7 @@
 package middlewares
 
 import (
+	"log"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -28,15 +29,30 @@ func Auth() gin.HandlerFunc {
 		}
 
 		/* Get roles in JWT provided by user in Authorization header */
-		userRole := jwtClaims.Role
-		authorized := false
-
-		/* Compare path requested with path in AuthorizedRoles */
+		userRoles := utils.ConvertStringToUintStruct(jwtClaims.Role)
 		pathRequested := c.Request.URL.Path
 		methodRequested := c.Request.Method
-		authorized = utils.ValidateRolePermissions(pathRequested, methodRequested, userRole)
+		rolePolicies, err := utils.GetRolePolicies(userRoles)
+		if err != nil {
+			c.JSON(http.StatusUnauthorized, gin.H{"error": err.Error()})
+			c.Abort()
+			return
+		}
 
-		if !authorized {
+		/* Get role's policies with path requested */
+		policiesWithPathRequested, err := utils.GetPoliciesWithMatchedPath(rolePolicies, pathRequested)
+		if err != nil {
+			c.JSON(http.StatusForbidden, gin.H{"error": err.Error()})
+			c.Abort()
+			return
+		}
+
+		/* Compare path requested with path in AuthorizedRoles */
+		authorized, err := utils.ValidateMethodRequestWithPolicyMethod(policiesWithPathRequested, methodRequested)
+		log.Println(authorized)
+		log.Println("========================================")
+
+		if err != nil {
 			c.JSON(http.StatusForbidden, gin.H{"error": "You're not able to perform " + methodRequested + " method on: " + pathRequested})
 			c.Abort()
 			return
