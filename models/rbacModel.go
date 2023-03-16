@@ -1,13 +1,15 @@
 package models
 
 type Role struct {
-	ID   uint   `json:"id" gorm:"primary_key,not null,auto_increment"`
-	Name string `json:"name" binding:"required" gorm:"not null"`
+	ID       uint   `json:"id" gorm:"primary_key,not null,auto_increment"`
+	Name     string `json:"name" binding:"required" gorm:"not null"`
+	Policies string `json:"policies" binding:"required" gorm:"not null"`
 }
 
 type RoleUpdate struct {
-	ID   uint   `json:"id,omitempty"`
-	Name string `json:"name,omitempty" binding:"required"`
+	ID       uint   `json:"id,omitempty"`
+	Name     string `json:"name,omitempty"`
+	Policies string `json:"policies,omitempty"`
 }
 
 type SuccessFindRoles struct {
@@ -31,7 +33,6 @@ type Policy struct {
 	Name              string `json:"name" binding:"required" gorm:"not null"`
 	Path              string `json:"path" binding:"required" gorm:"not null"`
 	AuthorizedMethods string `json:"authorizedMethods" binding:"required" gorm:"not null"`
-	AuthorizedRole    uint   `json:"authorizedRole" binding:"required" gorm:"not null"`
 }
 
 type PolicyUpdate struct {
@@ -39,7 +40,6 @@ type PolicyUpdate struct {
 	Name              string `json:"name,omitempty"`
 	Path              string `json:"path,omitempty"`
 	AuthorizedMethods string `json:"authorizedMethods,omitempty"`
-	AuthorizedRole    uint   `json:"authorizedRole,omitempty"`
 }
 
 type SuccessFindPolicies struct {
@@ -56,4 +56,8 @@ type SuccessPolicyUpdate struct {
 
 type SuccessPolicyDelete struct {
 	Data bool `json:"data"`
+}
+
+type AuthorizedMethods struct {
+	Data []string
 }

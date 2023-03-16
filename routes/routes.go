@@ -111,9 +111,6 @@ func InitRouter() *gin.Engine {
 			// Delete a role --> id is required
 			secure.DELETE("/roles/:id", controllers.DeleteRole)
 
-			// Find policies associated to given role
-			secure.GET("/roles/policies/:id", controllers.FindRolesPolicies)
-
 			/* Policies routes */
 
 			// Find all policies registered

@@ -49,9 +49,17 @@ func DeletePolicy(policyId uint) (bool, error) {
 	return true, nil
 }
 
-func GetPoliciesByRoleId(roleId uint) ([]models.Policy, error) {
+func GetPoliciesByIDs(policiesIDs []int) ([]models.Policy, error) {
 	var policies []models.Policy
-	if err := models.DB.Where("authorized_role = ?", roleId).Find(&policies).Error; err != nil {
+	if err := models.DB.Where("id IN ?", policiesIDs).Find(&policies).Error; err != nil {
+		return nil, err
+	}
+	return policies, nil
+}
+
+func GetPoliciesWithMatchedPath(policiesID []int, path string) ([]models.Policy, error) {
+	var policies []models.Policy
+	if err := models.DB.Where("id IN ? AND path = ?", policies, path).Find(&policies).Error; err != nil {
 		return nil, err
 	}
 
