@@ -37,7 +37,7 @@ func Auth() gin.HandlerFunc {
 		authorized = utils.ValidateRolePermissions(pathRequested, methodRequested, userRole)
 
 		if !authorized {
-			c.JSON(http.StatusForbidden, gin.H{"error": "Your user's role is not authorized"})
+			c.JSON(http.StatusForbidden, gin.H{"error": "You're not able to perform " + methodRequested + " method on: " + pathRequested})
 			c.Abort()
 			return
 		}
