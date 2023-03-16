@@ -54,11 +54,12 @@ func GroupAdminCreation() {
 func RoleAdminCreation() {
 	var roleAdmin models.Role
 	roleAdmin.Name = "Administrators"
+	roleAdmin.Policies = "1"
 	result := models.DB.Where("name = ?", roleAdmin.Name).Find(&roleAdmin)
 	if result.RowsAffected > 0 {
 		return
 	}
-	role := models.Role{Name: roleAdmin.Name}
+	role := models.Role{Name: roleAdmin.Name, Policies: roleAdmin.Policies}
 	models.DB.Create(&role)
 }
 
@@ -66,11 +67,11 @@ func PolicyAdminCreation() {
 	var policyAdmin models.Policy
 	policyAdmin.Name = "Administrators"
 	policyAdmin.Path = "/*"
-	policyAdmin.AuthorizedRole = 1
+	policyAdmin.AuthorizedMethods = "GET,POST,PATCH,UPDATE,DELETE"
 	result := models.DB.Where("name = ?", policyAdmin.Name).Find(&policyAdmin)
 	if result.RowsAffected > 0 {
 		return
 	}
-	policy := models.Policy{Name: policyAdmin.Name, Path: policyAdmin.Path, AuthorizedRole: policyAdmin.AuthorizedRole}
+	policy := models.Policy{Name: policyAdmin.Name, Path: policyAdmin.Path, AuthorizedMethods: policyAdmin.AuthorizedMethods}
 	models.DB.Create(&policy)
 }

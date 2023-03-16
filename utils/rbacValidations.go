@@ -1,42 +1,59 @@
 package utils
 
 import (
-	"github.com/gobwas/glob"
+	"errors"
+	"log"
+
+	"github.com/otisnado/nepackage/models"
 	"github.com/otisnado/nepackage/services"
 )
 
-func ValidateRolePermissions(urlPathRequested string, methodRequested string, roles string) bool {
+func GetRolePolicies(policiesIDs []int) ([]models.Policy, error) {
+	var rolePolicies []models.Policy
+	rolePolicies, err := services.GetPoliciesByIDs(policiesIDs)
+	if err != nil {
+		return nil, err
+	}
+	return rolePolicies, nil
+}
 
-	var g glob.Glob
-
-	userRoles := ConvertStringToUintStruct(roles)
-	for _, role := range userRoles {
-
-		/* Get policies associated with given role, if policies not found return false */
-		policies, err := services.GetPoliciesByRoleId(uint(role))
-		if err != nil {
-			return false
+func GetPoliciesWithMatchedPath(rolePolicies []models.Policy, urlPathRequested string) (matched []models.Policy, err error) {
+	var policiesMatched []models.Policy
+	for _, policy := range rolePolicies {
+		log.Println("Validando Path")
+		log.Println("========================================")
+		if MatchValidator(policy.Path, urlPathRequested) {
+			policiesMatched = append(policiesMatched, policy)
 		}
+	}
+	if policiesMatched == nil {
+		err = errors.New("you're not able to access " + urlPathRequested + " resource")
+		return nil, err
+	}
+	return policiesMatched, nil
+}
 
-		/* Compare if role has permissions on resource with the given url path */
-		for _, policy := range policies {
-
-			g = glob.MustCompile(policy.Path)
-			if g.Match(urlPathRequested) {
-
-				authorizedMethods := ConvertStringToStruct(policy.AuthorizedMethods)
-				for _, method := range authorizedMethods {
-
-					g = glob.MustCompile(method)
-					if g.Match(methodRequested) {
-						return true
-					}
-
-				}
-
+func ValidateMethodRequestWithPolicyMethod(policies []models.Policy, methodRequested string) (isAuthorized string, err error) {
+	var authorized string
+	for _, policy := range policies {
+		log.Println("Validando Method")
+		log.Println("========================================")
+		methodsAllowed := ConvertStringToStruct(policy.AuthorizedMethods)
+		for _, method := range methodsAllowed {
+			if MatchValidator(method, methodRequested) {
+				authorized = "true"
 			}
 		}
 	}
+	if authorized == "" {
+		err = errors.New("no methods matched with method requested")
+		return "", err
+	}
 
-	return false
+	return authorized, nil
 }
+
+// func GetAllowedMethodsInPolicy(policy models.Policy) (methodsAllowed []models.AuthorizedMethods) {
+// 	methodsAllowed = ConvertStringToStruct(policy.AuthorizedMethods)
+// 	return methodsAllowed
+// }
