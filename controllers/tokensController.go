@@ -91,9 +91,9 @@ func RefreshToken(c *gin.Context) {
 	})
 
 	claims := token.Claims.(jwt.MapClaims)
-	string_userID := fmt.Sprint(claims["id"])
-	uint_userId, _ := strconv.Atoi(string_userID)
-	user, err := services.GetUserById(uint(uint_userId))
+	stringUserID := fmt.Sprint(claims["id"])
+	uintUserId, _ := strconv.Atoi(stringUserID)
+	user, err := services.GetUserById(uint(uintUserId))
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		c.Abort()
