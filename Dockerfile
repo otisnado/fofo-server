@@ -16,11 +16,11 @@ RUN go build .
 
 FROM alpine
 
-RUN adduser -D fofo
+RUN adduser -D nepackage
 
-USER fofo
+USER nepackage
 
-WORKDIR /home/fofo
+WORKDIR /home/nepackage
 
 ENV DSN='root:1234@tcp(localhost:3306)/nepackage?parseTime=true&loc=America%2FEl_Salvador'
 
