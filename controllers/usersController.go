@@ -63,7 +63,7 @@ func FindUser(c *gin.Context) {
 // @Failure		400,401,500	{object}	models.ErrorMessage
 // @Router		/users	[post]
 func CreateUser(c *gin.Context) {
-	var input models.User
+	var input models.UserCreate
 	if err := c.ShouldBindJSON(&input); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return

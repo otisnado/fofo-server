@@ -12,6 +12,20 @@ type User struct {
 	Lastname  string    `json:"lastname" binding:"required"`
 	Username  string    `json:"username" gorm:"not null; unique" binding:"required"`
 	Mail      string    `json:"mail" gorm:"not null; unique" binding:"required"`
+	Password  string    `json:"-" binding:"required"`
+	Role      string    `json:"role" binding:"required"`
+	Group     int       `json:"group" binding:"required"`
+	State     bool      `json:"state" binding:"required"`
+	CreatedAt time.Time `gorm:"not null"`
+	UpdatedAt time.Time `gorm:"not null"`
+}
+
+type UserCreate struct {
+	ID        uint      `json:"id" gorm:"primary_key; not null"`
+	Name      string    `json:"name" binding:"required"`
+	Lastname  string    `json:"lastname" binding:"required"`
+	Username  string    `json:"username" gorm:"not null; unique" binding:"required"`
+	Mail      string    `json:"mail" gorm:"not null; unique" binding:"required"`
 	Password  string    `json:"password" binding:"required"`
 	Role      string    `json:"role" binding:"required"`
 	Group     int       `json:"group" binding:"required"`
@@ -52,7 +66,7 @@ type SuccessUserUpdate struct {
 	Data User `json:"data"`
 }
 
-func (user *User) HashPassword(password string) error {
+func (user *UserCreate) HashPassword(password string) error {
 	bytes, err := bcrypt.GenerateFromPassword([]byte(password), 14)
 	if err != nil {
 		return err

@@ -10,7 +10,7 @@ import (
 
 func AdminCreation() {
 
-	var adminUser models.User
+	var adminUser models.UserCreate
 	adminUser.Name = "Admin"
 	adminUser.Lastname = "System"
 	adminUser.Mail = "admin@nepackage.org"
