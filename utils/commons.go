@@ -29,15 +29,12 @@ func ConvertStringToUintStruct(input string) []int {
 
 func MatchValidator(mustValue string, toValidateValue string) bool {
 	var g glob.Glob
-	log.Println("Este es el compile: ", mustValue)
-	log.Println()
-	log.Println("Este es el Match", toValidateValue)
-	log.Println()
+	log.Println("Compile value: ", mustValue)
+	log.Println("Match value", toValidateValue)
 
 	g = glob.MustCompile(mustValue)
 	state := g.Match(toValidateValue)
-	log.Println("Resultado del match: ", state)
-	log.Println("========================================")
-	log.Println()
+	log.Println("Match result: ", state)
+
 	return state
 }
