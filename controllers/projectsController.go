@@ -9,16 +9,16 @@ import (
 	"github.com/otisnado/nepackage/services"
 )
 
-// FindGroups		godoc
-// @Summary			FindGroups
+// FindProjects		godoc
+// @Summary			FindProjects
 // @Schemes
-// @Description		Bulk all nepackage's groups
-// @Tags			Groups
+// @Description		Bulk all nepackage's projects
+// @Tags			Projects
 // @Produce			json
 // @Param			Authorization		header	string	true	"JWT without bearer"
-// @Success			200		{object}	models.SuccessFindGroups
+// @Success			200		{object}	models.SuccessFindProjects
 // @Failure			401,500	{object}	models.ErrorMessage
-// @Router			/groups	[get]
+// @Router			/projects	[get]
 func FindProjects(c *gin.Context) {
 	projects, err := services.GetProjects()
 	if err != nil {
@@ -28,17 +28,17 @@ func FindProjects(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"data": projects})
 }
 
-// FindGroup	godoc
-// @Summary		FindGroup
+// FindProject	godoc
+// @Summary		FindProject
 // @Schemes
-// @Description	Find a group with given id in path
-// @Tags		Groups
+// @Description	Find a project with given id in path
+// @Tags		Projects
 // @Produce		json
 // @Param		Authorization		header	string	true	"JWT without bearer"
-// @Param		id			path		int		true	"Group ID"
-// @Success		200			{object}	models.SuccessFindGroup
+// @Param		id			path		int		true	"Project ID"
+// @Success		200			{object}	models.SuccessFindProject
 // @Failure		400,401,404	{object}	models.ErrorMessage
-// @Router		/groups/{id}			[get]
+// @Router		/projects/{id}			[get]
 func FindProject(c *gin.Context) {
 	project_id, _ := strconv.Atoi(c.Param("id"))
 
@@ -50,17 +50,17 @@ func FindProject(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"data": project})
 }
 
-// CreateGroup	godoc
-// @Summary		CreateGroup
+// CreateProject	godoc
+// @Summary		CreateProject
 // @Schemes
-// @Description	Create group with models.Group model
-// @Tags		Groups
+// @Description	Create project with models.Project model
+// @Tags		Projects
 // @Produce		json
 // @Param		Authorization		header	string	true	"JWT without bearer"
-// @Param		group		body		models.Group		true	"Group data"
-// @Success		200			{object}	models.SuccessGroupCreation
+// @Param		project		body		models.Project		true	"Project data"
+// @Success		200			{object}	models.SuccessProjectCreation
 // @Failure		400,401,500	{object}	models.ErrorMessage
-// @Router		/groups	[post]
+// @Router		/projects	[post]
 func CreateProject(c *gin.Context) {
 	var input models.Project
 	if err := c.ShouldBindJSON(&input); err != nil {
@@ -77,17 +77,17 @@ func CreateProject(c *gin.Context) {
 	c.JSON(http.StatusCreated, gin.H{"data": &input})
 }
 
-// UpdateGroup	godoc
-// @Summary		UpdateGroup
+// UpdateProject	godoc
+// @Summary		UpdateProject
 // @Schemes
-// @Description	Update group with models.Group model
-// @Tags		Groups
+// @Description	Update project with models.Project model
+// @Tags		Projects
 // @Produce		json
 // @Param		Authorization		header	string	true	"JWT without bearer"
-// @Param		group			body		models.Group			true	"Group data"
-// @Success		200				{object}	models.SuccessGroupUpdate
+// @Param		project			body		models.Project			true	"Project data"
+// @Success		200				{object}	models.SuccessProjectUpdate
 // @Failure		400,401,404,500	{object}	models.ErrorMessage
-// @Router		/groups/{id}	[patch]
+// @Router		/projects/{id}	[patch]
 func UpdateProject(c *gin.Context) {
 	project_id, _ := strconv.Atoi(c.Param("id"))
 
@@ -111,17 +111,17 @@ func UpdateProject(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"data": projectUpdated})
 }
 
-// DeleteGroup	godoc
-// @Summary		DeleteGroup
+// DeleteProject	godoc
+// @Summary		DeleteProject
 // @Schemes
-// @Description	Delete group with using id
-// @Tags		Groups
+// @Description	Delete project with using id
+// @Tags		Projects
 // @Produce		json
 // @Param		Authorization		header	string	true	"JWT without bearer"
-// @Param		id			path		int				true	"Group ID"
-// @Success		200			{object}	models.SuccessGroupDelete
+// @Param		id			path		int				true	"Project ID"
+// @Success		200			{object}	models.SuccessProjectDelete
 // @Failure		401,404,500	{object}	models.ErrorMessage
-// @Router		/groups/{id}	[delete]
+// @Router		/projects/{id}	[delete]
 func DeleteProject(c *gin.Context) {
 	project_id, _ := strconv.Atoi(c.Param("id"))
 
