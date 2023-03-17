@@ -6,7 +6,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/otisnado/nepackage/models"
-	"github.com/otisnado/nepackage/services"
+	"github.com/otisnado/nepackage/repository"
 	"github.com/otisnado/nepackage/utils"
 )
 
@@ -21,7 +21,7 @@ import (
 // @Failure			401,500	{object}	models.ErrorMessage
 // @Router			/users	[get]
 func FindUsers(c *gin.Context) {
-	users, err := services.GetUsers()
+	users, err := repository.GetUsers()
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 	}
@@ -43,7 +43,7 @@ func FindUsers(c *gin.Context) {
 func FindUser(c *gin.Context) {
 	user_id, _ := strconv.Atoi(c.Param("id"))
 
-	user, err := services.GetUserById(uint(user_id))
+	user, err := repository.GetUserById(uint(user_id))
 	if err != nil {
 		c.JSON(http.StatusNotFound, gin.H{"error": err.Error()})
 		return
@@ -84,7 +84,7 @@ func CreateUser(c *gin.Context) {
 		return
 	}
 
-	created, err := services.CreateUser(&input)
+	created, err := repository.CreateUser(&input)
 	if !created {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
@@ -113,13 +113,13 @@ func UpdateUser(c *gin.Context) {
 		return
 	}
 
-	_, err := services.GetUserById(uint(user_id))
+	_, err := repository.GetUserById(uint(user_id))
 	if err != nil {
 		c.JSON(http.StatusNotFound, gin.H{"error": err.Error()})
 		return
 	}
 
-	userUpdated, err := services.UpdateUser(uint(user_id), input)
+	userUpdated, err := repository.UpdateUser(uint(user_id), input)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 	}
@@ -141,13 +141,13 @@ func UpdateUser(c *gin.Context) {
 func DeleteUser(c *gin.Context) {
 	user_id, _ := strconv.Atoi(c.Param("id"))
 
-	_, err := services.GetUserById(uint(user_id))
+	_, err := repository.GetUserById(uint(user_id))
 	if err != nil {
 		c.JSON(http.StatusNotFound, gin.H{"error": err.Error()})
 		return
 	}
 
-	state, err := services.DeleteUser(uint(user_id))
+	state, err := repository.DeleteUser(uint(user_id))
 	if !state {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return

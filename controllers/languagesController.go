@@ -6,7 +6,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/otisnado/nepackage/models"
-	"github.com/otisnado/nepackage/services"
+	"github.com/otisnado/nepackage/repository"
 )
 
 // FindLanguages		godoc
@@ -20,7 +20,7 @@ import (
 // @Failure			401,500	{object}	models.ErrorMessage
 // @Router			/languages	[get]
 func FindLanguages(c *gin.Context) {
-	languages, err := services.GetLanguages()
+	languages, err := repository.GetLanguages()
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 	}
@@ -42,7 +42,7 @@ func FindLanguages(c *gin.Context) {
 func FindLanguage(c *gin.Context) {
 	language_id, _ := strconv.Atoi(c.Param("id"))
 
-	language, err := services.GetLanguageById(uint(language_id))
+	language, err := repository.GetLanguageById(uint(language_id))
 	if err != nil {
 		c.JSON(http.StatusNotFound, gin.H{"error": err.Error()})
 		return
@@ -68,7 +68,7 @@ func CreateLanguage(c *gin.Context) {
 		return
 	}
 
-	created, err := services.CreateLanguage(&input)
+	created, err := repository.CreateLanguage(&input)
 	if !created {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
@@ -97,13 +97,13 @@ func UpdateLanguage(c *gin.Context) {
 		return
 	}
 
-	_, err := services.GetLanguageById(uint(language_id))
+	_, err := repository.GetLanguageById(uint(language_id))
 	if err != nil {
 		c.JSON(http.StatusNotFound, gin.H{"error": err.Error()})
 		return
 	}
 
-	languageUpdated, err := services.UpdateLanguage(uint(language_id), input)
+	languageUpdated, err := repository.UpdateLanguage(uint(language_id), input)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 	}
@@ -125,13 +125,13 @@ func UpdateLanguage(c *gin.Context) {
 func DeleteLanguage(c *gin.Context) {
 	language_id, _ := strconv.Atoi(c.Param("id"))
 
-	_, err := services.GetLanguageById(uint(language_id))
+	_, err := repository.GetLanguageById(uint(language_id))
 	if err != nil {
 		c.JSON(http.StatusNotFound, gin.H{"error": err.Error()})
 		return
 	}
 
-	state, err := services.DeleteLanguage(uint(language_id))
+	state, err := repository.DeleteLanguage(uint(language_id))
 	if !state {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return

@@ -6,7 +6,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/otisnado/nepackage/models"
-	"github.com/otisnado/nepackage/services"
+	"github.com/otisnado/nepackage/repository"
 )
 
 // FindPolicies		godoc
@@ -20,7 +20,7 @@ import (
 // @Failure			401,500	{object}	models.ErrorMessage
 // @Router			/policies	[get]
 func FindPolicies(c *gin.Context) {
-	projects, err := services.GetPolicies()
+	projects, err := repository.GetPolicies()
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 	}
@@ -42,7 +42,7 @@ func FindPolicies(c *gin.Context) {
 func FindPolicy(c *gin.Context) {
 	project_id, _ := strconv.Atoi(c.Param("id"))
 
-	project, err := services.GetPolicyById(uint(project_id))
+	project, err := repository.GetPolicyById(uint(project_id))
 	if err != nil {
 		c.JSON(http.StatusNotFound, gin.H{"error": err.Error()})
 		return
@@ -68,7 +68,7 @@ func CreatePolicy(c *gin.Context) {
 		return
 	}
 
-	created, err := services.CreatePolicy(&input)
+	created, err := repository.CreatePolicy(&input)
 	if !created {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
@@ -97,13 +97,13 @@ func UpdatePolicy(c *gin.Context) {
 		return
 	}
 
-	_, err := services.GetPolicyById(uint(project_id))
+	_, err := repository.GetPolicyById(uint(project_id))
 	if err != nil {
 		c.JSON(http.StatusNotFound, gin.H{"error": err.Error()})
 		return
 	}
 
-	projectUpdated, err := services.UpdatePolicy(uint(project_id), input)
+	projectUpdated, err := repository.UpdatePolicy(uint(project_id), input)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 	}
@@ -125,13 +125,13 @@ func UpdatePolicy(c *gin.Context) {
 func DeletePolicy(c *gin.Context) {
 	project_id, _ := strconv.Atoi(c.Param("id"))
 
-	_, err := services.GetPolicyById(uint(project_id))
+	_, err := repository.GetPolicyById(uint(project_id))
 	if err != nil {
 		c.JSON(http.StatusNotFound, gin.H{"error": err.Error()})
 		return
 	}
 
-	state, err := services.DeletePolicy(uint(project_id))
+	state, err := repository.DeletePolicy(uint(project_id))
 	if !state {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return

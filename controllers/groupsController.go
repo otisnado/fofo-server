@@ -6,7 +6,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/otisnado/nepackage/models"
-	"github.com/otisnado/nepackage/services"
+	"github.com/otisnado/nepackage/repository"
 )
 
 // FindGroups		godoc
@@ -20,7 +20,7 @@ import (
 // @Failure			401,500	{object}	models.ErrorMessage
 // @Router			/groups	[get]
 func FindGroups(c *gin.Context) {
-	groups, err := services.GetGroups()
+	groups, err := repository.GetGroups()
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 	}
@@ -42,7 +42,7 @@ func FindGroups(c *gin.Context) {
 func FindGroup(c *gin.Context) {
 	group_id, _ := strconv.Atoi(c.Param("id"))
 
-	group, err := services.GetGroupById(uint(group_id))
+	group, err := repository.GetGroupById(uint(group_id))
 	if err != nil {
 		c.JSON(http.StatusNotFound, gin.H{"error": err.Error()})
 		return
@@ -68,7 +68,7 @@ func CreateGroup(c *gin.Context) {
 		return
 	}
 
-	created, err := services.CreateGroup(&input)
+	created, err := repository.CreateGroup(&input)
 	if !created {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
@@ -97,13 +97,13 @@ func UpdateGroup(c *gin.Context) {
 		return
 	}
 
-	_, err := services.GetGroupById(uint(group_id))
+	_, err := repository.GetGroupById(uint(group_id))
 	if err != nil {
 		c.JSON(http.StatusNotFound, gin.H{"error": err.Error()})
 		return
 	}
 
-	groupUpdated, err := services.UpdateGroup(uint(group_id), input)
+	groupUpdated, err := repository.UpdateGroup(uint(group_id), input)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 	}
@@ -125,13 +125,13 @@ func UpdateGroup(c *gin.Context) {
 func DeleteGroup(c *gin.Context) {
 	group_id, _ := strconv.Atoi(c.Param("id"))
 
-	_, err := services.GetGroupById(uint(group_id))
+	_, err := repository.GetGroupById(uint(group_id))
 	if err != nil {
 		c.JSON(http.StatusNotFound, gin.H{"error": err.Error()})
 		return
 	}
 
-	state, err := services.DeleteGroup(uint(group_id))
+	state, err := repository.DeleteGroup(uint(group_id))
 	if !state {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return

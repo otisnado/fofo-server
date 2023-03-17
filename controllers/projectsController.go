@@ -6,7 +6,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/otisnado/nepackage/models"
-	"github.com/otisnado/nepackage/services"
+	"github.com/otisnado/nepackage/repository"
 )
 
 // FindProjects		godoc
@@ -20,7 +20,7 @@ import (
 // @Failure			401,500	{object}	models.ErrorMessage
 // @Router			/projects	[get]
 func FindProjects(c *gin.Context) {
-	projects, err := services.GetProjects()
+	projects, err := repository.GetProjects()
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 	}
@@ -42,7 +42,7 @@ func FindProjects(c *gin.Context) {
 func FindProject(c *gin.Context) {
 	project_id, _ := strconv.Atoi(c.Param("id"))
 
-	project, err := services.GetProjectById(uint(project_id))
+	project, err := repository.GetProjectById(uint(project_id))
 	if err != nil {
 		c.JSON(http.StatusNotFound, gin.H{"error": err.Error()})
 		return
@@ -68,7 +68,7 @@ func CreateProject(c *gin.Context) {
 		return
 	}
 
-	created, err := services.CreateProject(&input)
+	created, err := repository.CreateProject(&input)
 	if !created {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
@@ -97,13 +97,13 @@ func UpdateProject(c *gin.Context) {
 		return
 	}
 
-	_, err := services.GetProjectById(uint(project_id))
+	_, err := repository.GetProjectById(uint(project_id))
 	if err != nil {
 		c.JSON(http.StatusNotFound, gin.H{"error": err.Error()})
 		return
 	}
 
-	projectUpdated, err := services.UpdateProject(uint(project_id), input)
+	projectUpdated, err := repository.UpdateProject(uint(project_id), input)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 	}
@@ -125,13 +125,13 @@ func UpdateProject(c *gin.Context) {
 func DeleteProject(c *gin.Context) {
 	project_id, _ := strconv.Atoi(c.Param("id"))
 
-	_, err := services.GetProjectById(uint(project_id))
+	_, err := repository.GetProjectById(uint(project_id))
 	if err != nil {
 		c.JSON(http.StatusNotFound, gin.H{"error": err.Error()})
 		return
 	}
 
-	state, err := services.DeleteProject(uint(project_id))
+	state, err := repository.DeleteProject(uint(project_id))
 	if !state {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
