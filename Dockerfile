@@ -22,7 +22,7 @@ USER fofo
 
 WORKDIR /home/fofo
 
-ENV BDHOST=mysql DBPORT=3306 DBNAME=fofo DBUSER=root DBPASS=1234
+ENV DSN='root:1234@tcp(localhost:3306)/nepackage?parseTime=true&loc=America%2FEl_Salvador'
 
 COPY --from=build /src/nepackage /home/fofo/nepackage
 
