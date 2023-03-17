@@ -108,6 +108,66 @@ const docTemplate = `{
                         }
                     }
                 }
+            },
+            "patch": {
+                "description": "Update group with models.Group model",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Groups"
+                ],
+                "summary": "UpdateGroup",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "JWT without bearer",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "description": "Group data",
+                        "name": "group",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.Group"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.SuccessGroupUpdate"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/models.ErrorMessage"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/models.ErrorMessage"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/models.ErrorMessage"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/models.ErrorMessage"
+                        }
+                    }
+                }
             }
         },
         "/groups/{id}": {
@@ -164,7 +224,7 @@ const docTemplate = `{
                 }
             },
             "delete": {
-                "description": "Delete group with using id",
+                "description": "Delete group using id",
                 "produces": [
                     "application/json"
                 ],
@@ -193,66 +253,6 @@ const docTemplate = `{
                         "description": "OK",
                         "schema": {
                             "$ref": "#/definitions/models.SuccessGroupDelete"
-                        }
-                    },
-                    "401": {
-                        "description": "Unauthorized",
-                        "schema": {
-                            "$ref": "#/definitions/models.ErrorMessage"
-                        }
-                    },
-                    "404": {
-                        "description": "Not Found",
-                        "schema": {
-                            "$ref": "#/definitions/models.ErrorMessage"
-                        }
-                    },
-                    "500": {
-                        "description": "Internal Server Error",
-                        "schema": {
-                            "$ref": "#/definitions/models.ErrorMessage"
-                        }
-                    }
-                }
-            },
-            "patch": {
-                "description": "Update group with models.Group model",
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Groups"
-                ],
-                "summary": "UpdateGroup",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "JWT without bearer",
-                        "name": "Authorization",
-                        "in": "header",
-                        "required": true
-                    },
-                    {
-                        "description": "Group data",
-                        "name": "group",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/models.Group"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/models.SuccessGroupUpdate"
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/models.ErrorMessage"
                         }
                     },
                     "401": {
@@ -539,7 +539,7 @@ const docTemplate = `{
         },
         "/policies": {
             "get": {
-                "description": "Bulk all fofo-server's policies",
+                "description": "Bulk all nepackage's policies",
                 "produces": [
                     "application/json"
                 ],
@@ -891,6 +891,112 @@ const docTemplate = `{
                         }
                     }
                 }
+            }
+        },
+        "/projects/{id}": {
+            "get": {
+                "description": "Find a project with given id in path",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Projects"
+                ],
+                "summary": "FindProject",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "JWT without bearer",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Project ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.SuccessFindProject"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/models.ErrorMessage"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/models.ErrorMessage"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/models.ErrorMessage"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "description": "Delete project with using id",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Projects"
+                ],
+                "summary": "DeleteProject",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "JWT without bearer",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Project ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.SuccessProjectDelete"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/models.ErrorMessage"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/models.ErrorMessage"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/models.ErrorMessage"
+                        }
+                    }
+                }
             },
             "patch": {
                 "description": "Update project with models.Project model",
@@ -953,115 +1059,9 @@ const docTemplate = `{
                 }
             }
         },
-        "/projects/{id}": {
-            "get": {
-                "description": "Find a project with given id in path",
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Projects"
-                ],
-                "summary": "FindProject",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "JWT without bearer",
-                        "name": "Authorization",
-                        "in": "header",
-                        "required": true
-                    },
-                    {
-                        "type": "integer",
-                        "description": "Project ID",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/models.SuccessFindProject"
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/models.ErrorMessage"
-                        }
-                    },
-                    "401": {
-                        "description": "Unauthorized",
-                        "schema": {
-                            "$ref": "#/definitions/models.ErrorMessage"
-                        }
-                    },
-                    "404": {
-                        "description": "Not Found",
-                        "schema": {
-                            "$ref": "#/definitions/models.ErrorMessage"
-                        }
-                    }
-                }
-            },
-            "delete": {
-                "description": "Delete project using id",
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Projects"
-                ],
-                "summary": "DeleteProject",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "JWT without bearer",
-                        "name": "Authorization",
-                        "in": "header",
-                        "required": true
-                    },
-                    {
-                        "type": "integer",
-                        "description": "Project ID",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/models.SuccessProjectDelete"
-                        }
-                    },
-                    "401": {
-                        "description": "Unauthorized",
-                        "schema": {
-                            "$ref": "#/definitions/models.ErrorMessage"
-                        }
-                    },
-                    "404": {
-                        "description": "Not Found",
-                        "schema": {
-                            "$ref": "#/definitions/models.ErrorMessage"
-                        }
-                    },
-                    "500": {
-                        "description": "Internal Server Error",
-                        "schema": {
-                            "$ref": "#/definitions/models.ErrorMessage"
-                        }
-                    }
-                }
-            }
-        },
         "/roles": {
             "get": {
-                "description": "Bulk all fofo-server's roles",
+                "description": "Bulk all nepackage's roles",
                 "produces": [
                     "application/json"
                 ],
@@ -1156,14 +1156,14 @@ const docTemplate = `{
         },
         "/roles/{id}": {
             "get": {
-                "description": "Find all policies associated to given role with role id in path",
+                "description": "Find a role with given id in path",
                 "produces": [
                     "application/json"
                 ],
                 "tags": [
                     "Roles"
                 ],
-                "summary": "FindRolesPolicies",
+                "summary": "FindRole",
                 "parameters": [
                     {
                         "type": "string",
@@ -1184,7 +1184,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/models.SuccessFindPolicies"
+                            "$ref": "#/definitions/models.SuccessFindRoles"
                         }
                     },
                     "400": {
@@ -1730,13 +1730,13 @@ const docTemplate = `{
         "models.Policy": {
             "type": "object",
             "required": [
-                "authorizedRole",
+                "authorizedMethods",
                 "name",
                 "path"
             ],
             "properties": {
-                "authorizedRole": {
-                    "type": "integer"
+                "authorizedMethods": {
+                    "type": "string"
                 },
                 "id": {
                     "type": "integer"
@@ -1780,13 +1780,17 @@ const docTemplate = `{
         "models.Role": {
             "type": "object",
             "required": [
-                "name"
+                "name",
+                "policies"
             ],
             "properties": {
                 "id": {
                     "type": "integer"
                 },
                 "name": {
+                    "type": "string"
+                },
+                "policies": {
                     "type": "string"
                 }
             }
@@ -2095,7 +2099,7 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "role": {
-                    "type": "integer"
+                    "type": "string"
                 },
                 "state": {
                     "type": "boolean"

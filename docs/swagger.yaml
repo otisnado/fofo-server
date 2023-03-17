@@ -35,8 +35,8 @@ definitions:
     type: object
   models.Policy:
     properties:
-      authorizedRole:
-        type: integer
+      authorizedMethods:
+        type: string
       id:
         type: integer
       name:
@@ -44,7 +44,7 @@ definitions:
       path:
         type: string
     required:
-    - authorizedRole
+    - authorizedMethods
     - name
     - path
     type: object
@@ -73,8 +73,11 @@ definitions:
         type: integer
       name:
         type: string
+      policies:
+        type: string
     required:
     - name
+    - policies
     type: object
   models.SuccessFindGroup:
     properties:
@@ -262,7 +265,7 @@ definitions:
       password:
         type: string
       role:
-        type: integer
+        type: string
       state:
         type: boolean
       updatedAt:
@@ -309,6 +312,46 @@ paths:
       summary: FindGroups
       tags:
       - Groups
+    patch:
+      description: Update group with models.Group model
+      parameters:
+      - description: JWT without bearer
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: Group data
+        in: body
+        name: group
+        required: true
+        schema:
+          $ref: '#/definitions/models.Group'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.SuccessGroupUpdate'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.ErrorMessage'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/models.ErrorMessage'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.ErrorMessage'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ErrorMessage'
+      summary: UpdateGroup
+      tags:
+      - Groups
     post:
       description: Create group with models.Group model
       parameters:
@@ -347,7 +390,7 @@ paths:
       - Groups
   /groups/{id}:
     delete:
-      description: Delete group with using id
+      description: Delete group using id
       parameters:
       - description: JWT without bearer
         in: header
@@ -414,46 +457,6 @@ paths:
           schema:
             $ref: '#/definitions/models.ErrorMessage'
       summary: FindGroup
-      tags:
-      - Groups
-    patch:
-      description: Update group with models.Group model
-      parameters:
-      - description: JWT without bearer
-        in: header
-        name: Authorization
-        required: true
-        type: string
-      - description: Group data
-        in: body
-        name: group
-        required: true
-        schema:
-          $ref: '#/definitions/models.Group'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/models.SuccessGroupUpdate'
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/models.ErrorMessage'
-        "401":
-          description: Unauthorized
-          schema:
-            $ref: '#/definitions/models.ErrorMessage'
-        "404":
-          description: Not Found
-          schema:
-            $ref: '#/definitions/models.ErrorMessage'
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/models.ErrorMessage'
-      summary: UpdateGroup
       tags:
       - Groups
   /languages:
@@ -632,7 +635,7 @@ paths:
       - Languages
   /policies:
     get:
-      description: Bulk all fofo-server's policies
+      description: Bulk all nepackage's policies
       parameters:
       - description: JWT without bearer
         in: header
@@ -831,46 +834,6 @@ paths:
       summary: FindProjects
       tags:
       - Projects
-    patch:
-      description: Update project with models.Project model
-      parameters:
-      - description: JWT without bearer
-        in: header
-        name: Authorization
-        required: true
-        type: string
-      - description: Project data
-        in: body
-        name: project
-        required: true
-        schema:
-          $ref: '#/definitions/models.Project'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/models.SuccessProjectUpdate'
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/models.ErrorMessage'
-        "401":
-          description: Unauthorized
-          schema:
-            $ref: '#/definitions/models.ErrorMessage'
-        "404":
-          description: Not Found
-          schema:
-            $ref: '#/definitions/models.ErrorMessage'
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/models.ErrorMessage'
-      summary: UpdateProject
-      tags:
-      - Projects
     post:
       description: Create project with models.Project model
       parameters:
@@ -909,7 +872,7 @@ paths:
       - Projects
   /projects/{id}:
     delete:
-      description: Delete project using id
+      description: Delete project with using id
       parameters:
       - description: JWT without bearer
         in: header
@@ -978,9 +941,49 @@ paths:
       summary: FindProject
       tags:
       - Projects
+    patch:
+      description: Update project with models.Project model
+      parameters:
+      - description: JWT without bearer
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: Project data
+        in: body
+        name: project
+        required: true
+        schema:
+          $ref: '#/definitions/models.Project'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.SuccessProjectUpdate'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.ErrorMessage'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/models.ErrorMessage'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.ErrorMessage'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ErrorMessage'
+      summary: UpdateProject
+      tags:
+      - Projects
   /roles:
     get:
-      description: Bulk all fofo-server's roles
+      description: Bulk all nepackage's roles
       parameters:
       - description: JWT without bearer
         in: header
@@ -1078,7 +1081,7 @@ paths:
       tags:
       - Roles
     get:
-      description: Find all policies associated to given role with role id in path
+      description: Find a role with given id in path
       parameters:
       - description: JWT without bearer
         in: header
@@ -1096,7 +1099,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/models.SuccessFindPolicies'
+            $ref: '#/definitions/models.SuccessFindRoles'
         "400":
           description: Bad Request
           schema:
@@ -1109,7 +1112,7 @@ paths:
           description: Not Found
           schema:
             $ref: '#/definitions/models.ErrorMessage'
-      summary: FindRolesPolicies
+      summary: FindRole
       tags:
       - Roles
     patch:
