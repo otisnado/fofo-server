@@ -6,7 +6,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/otisnado/nepackage/models"
-	"github.com/otisnado/nepackage/services"
+	"github.com/otisnado/nepackage/repository"
 )
 
 // FindRoles		godoc
@@ -20,7 +20,7 @@ import (
 // @Failure			401,500	{object}	models.ErrorMessage
 // @Router			/roles	[get]
 func FindRoles(c *gin.Context) {
-	roles, err := services.GetRoles()
+	roles, err := repository.GetRoles()
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 	}
@@ -42,7 +42,7 @@ func FindRoles(c *gin.Context) {
 func FindRole(c *gin.Context) {
 	project_id, _ := strconv.Atoi(c.Param("id"))
 
-	project, err := services.GetRoleById(uint(project_id))
+	project, err := repository.GetRoleById(uint(project_id))
 	if err != nil {
 		c.JSON(http.StatusNotFound, gin.H{"error": err.Error()})
 		return
@@ -68,7 +68,7 @@ func CreateRole(c *gin.Context) {
 		return
 	}
 
-	created, err := services.CreateRole(&input)
+	created, err := repository.CreateRole(&input)
 	if !created {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
@@ -97,13 +97,13 @@ func UpdateRole(c *gin.Context) {
 		return
 	}
 
-	_, err := services.GetRoleById(uint(project_id))
+	_, err := repository.GetRoleById(uint(project_id))
 	if err != nil {
 		c.JSON(http.StatusNotFound, gin.H{"error": err.Error()})
 		return
 	}
 
-	projectUpdated, err := services.UpdateRole(uint(project_id), input)
+	projectUpdated, err := repository.UpdateRole(uint(project_id), input)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 	}
@@ -125,13 +125,13 @@ func UpdateRole(c *gin.Context) {
 func DeleteRole(c *gin.Context) {
 	project_id, _ := strconv.Atoi(c.Param("id"))
 
-	_, err := services.GetRoleById(uint(project_id))
+	_, err := repository.GetRoleById(uint(project_id))
 	if err != nil {
 		c.JSON(http.StatusNotFound, gin.H{"error": err.Error()})
 		return
 	}
 
-	state, err := services.DeleteRole(uint(project_id))
+	state, err := repository.DeleteRole(uint(project_id))
 	if !state {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return

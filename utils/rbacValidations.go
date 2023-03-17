@@ -5,12 +5,12 @@ import (
 	"log"
 
 	"github.com/otisnado/nepackage/models"
-	"github.com/otisnado/nepackage/services"
+	"github.com/otisnado/nepackage/repository"
 )
 
 func GetRolePolicies(policiesIDs []int) ([]models.Policy, error) {
 	var rolePolicies []models.Policy
-	rolePolicies, err := services.GetPoliciesByIDs(policiesIDs)
+	rolePolicies, err := repository.GetPoliciesByIDs(policiesIDs)
 	if err != nil {
 		return nil, err
 	}

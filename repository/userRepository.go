@@ -1,4 +1,4 @@
-package services
+package repository
 
 import (
 	"github.com/otisnado/nepackage/models"
@@ -21,8 +21,8 @@ func GetUserById(userId uint) (*models.User, error) {
 	return user, nil
 }
 
-func CreateUser(user *models.User) (bool, error) {
-	if err := models.DB.Create(&user).Error; err != nil {
+func CreateUser(user *models.UserCreate) (bool, error) {
+	if err := models.DB.Table("users").Create(&user).Error; err != nil {
 		return false, err
 	}
 

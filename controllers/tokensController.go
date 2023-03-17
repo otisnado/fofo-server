@@ -9,7 +9,7 @@ import (
 	"github.com/golang-jwt/jwt"
 	"github.com/otisnado/nepackage/auth"
 	"github.com/otisnado/nepackage/models"
-	"github.com/otisnado/nepackage/services"
+	"github.com/otisnado/nepackage/repository"
 )
 
 // GenerateToken	godoc
@@ -93,7 +93,7 @@ func RefreshToken(c *gin.Context) {
 	claims := token.Claims.(jwt.MapClaims)
 	stringUserID := fmt.Sprint(claims["id"])
 	uintUserId, _ := strconv.Atoi(stringUserID)
-	user, err := services.GetUserById(uint(uintUserId))
+	user, err := repository.GetUserById(uint(uintUserId))
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		c.Abort()
