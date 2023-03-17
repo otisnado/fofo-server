@@ -37,7 +37,7 @@ jobs:
         run: npm install -g semantic-release
 
       - name: Release
-        run: semantic-release --branches main --debug
+        run: semantic-release -b main -p --verify-conditions -p --verify-release -p --generate-notes -p --prepare -p --publish --debug
         env:
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
         shell: bash
