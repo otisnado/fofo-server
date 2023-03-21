@@ -4,6 +4,10 @@ RUN mkdir /src
 
 WORKDIR /src
 
+ENV CGO_ENABLED=1
+
+RUN apk add build-base
+
 COPY go.mod ./
 
 COPY go.sum ./
@@ -20,7 +24,7 @@ FROM openjdk:17-alpine
 # Variables required to build
 ENV SPRING_CLI=3.0.4
 ENV SYSTEM_USER=nepa
-ENV DSN='root:1234@tcp(localhost:3306)/nepackage?parseTime=true&loc=America%2FEl_Salvador'
+ENV DSN=''
 
 
 # OS repositories update
