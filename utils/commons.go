@@ -2,6 +2,7 @@ package utils
 
 import (
 	"log"
+	"os"
 	"strconv"
 	"strings"
 
@@ -37,4 +38,19 @@ func MatchValidator(mustValue string, toValidateValue string) bool {
 	log.Println("Match result: ", state)
 
 	return state
+}
+
+func TmpFolderCreation(folderName string) (folderPath string, err error) {
+	path, err := os.Getwd()
+	if err != nil {
+		log.Println(err)
+	}
+
+	folderToCreate := path + "/" + folderName
+	err = os.MkdirAll(folderToCreate, 0755)
+	if err != nil {
+		log.Fatal(err)
+		return "", err
+	}
+	return folderToCreate, nil
 }
