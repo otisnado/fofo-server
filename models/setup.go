@@ -15,6 +15,7 @@ func ConnectDatabase() {
 
 	if os.Getenv("DSN") != "" {
 		dsn := os.Getenv("DSN")
+		log.Println(dsn)
 		db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
 		if err != nil {
 			log.Fatalln(err)
@@ -24,16 +25,17 @@ func ConnectDatabase() {
 		if err != nil {
 			return
 		}
-	}
-	db, err := gorm.Open(sqlite.Open("file::memory:"), &gorm.Config{})
-	if err != nil {
-		log.Fatalln(err)
-	}
+		DB = db
+	} else {
+		db, err := gorm.Open(sqlite.Open("file::memory:"), &gorm.Config{})
+		if err != nil {
+			log.Fatalln(err)
+		}
 
-	err = db.AutoMigrate(Project{}, Language{}, User{}, Group{}, Role{}, Policy{})
-	if err != nil {
-		return
+		err = db.AutoMigrate(Project{}, Language{}, User{}, Group{}, Role{}, Policy{})
+		if err != nil {
+			return
+		}
+		DB = db
 	}
-
-	DB = db
 }
