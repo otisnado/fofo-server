@@ -4,6 +4,10 @@ RUN mkdir /src
 
 WORKDIR /src
 
+ENV CGO_ENABLED=1
+
+RUN apk add build-base
+
 COPY go.mod ./
 
 COPY go.sum ./
@@ -14,16 +18,41 @@ COPY . /src/
 
 RUN go build .
 
-FROM alpine
+FROM openjdk:17-alpine
 
-RUN adduser -D nepackage
 
-USER nepackage
+# Variables required to build
+ENV SPRING_CLI=3.0.4
+ENV SYSTEM_USER=nepa
+ENV DSN=''
 
-WORKDIR /home/nepackage
 
-ENV DSN='root:1234@tcp(localhost:3306)/nepackage?parseTime=true&loc=America%2FEl_Salvador'
+# OS repositories update
+RUN apk update
 
-COPY --from=build /src/nepackage /home/fofo/nepackage
+# Installing required packages
+RUN apk add curl bash git
 
-ENTRYPOINT [ "/home/fofo/nepackage" ]
+# Shell set up
+SHELL ["/bin/bash", "-c"]
+
+# User creation
+RUN adduser -D -s /bin/bash ${SYSTEM_USER}
+
+
+# User set up
+USER ${SYSTEM_USER}
+
+WORKDIR /home/${SYSTEM_USER}
+
+COPY --chown=${SYSTEM_USER}:${SYSTEM_USER} --from=build /src/setup.sh .
+
+# Installing external dependencies
+RUN chmod +x /home/${SYSTEM_USER}/setup.sh && \
+/home/${SYSTEM_USER}/setup.sh
+
+COPY --chown=${SYSTEM_USER}:${SYSTEM_USER} --from=build /src/nepackage /usr/local/bin/nepackage
+
+EXPOSE 8080
+
+ENTRYPOINT [ "nepackage" ]

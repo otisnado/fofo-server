@@ -1,25 +1,20 @@
 # Nepackage
 
-A server to have main place where start a new project
+A tool to have a main place where start a new project
 
 ## Requeriments
 - Go 1.19.* o superior
 - Docker
 - MySQL 8
 - Environments variables:
-  - `DBHOST` (Default localhost)
-  - `DBPORT` (Default 3306)
-  - `DBNAME` (Default fofo)
-  - `DBUSER` (Default root)
-  - `DBPASS` (Default 1234)
-  - `DBTZ` (Default America%2FEl_Salvador)
+  - `DSN` "connectionString" to MySQL database. Default to `''`
   - `JWTKEY` JWT key to sign tokens
 - Gow package for development
 
 ## How to start project
 
 #### Development
-1. Clone FoFo Server repository
+1. Clone Nepackage repository
 ```
 git clone {repository} 
 ```
@@ -45,7 +40,7 @@ gow run main.go
 ## Start Docker container
 You can find image on [Docker Hub](https://hub.docker.com/r/otisnado/nepackage)
 ```
-docker run -d -p 9090:8080 -e DBHOST=localhost -e DBPORT=3306 -e DBNAME=fofo -e DBUSER=root -e DBPASS=1234 -e DBTZ=America%2FEl_Salvador --name nepackage otisnado/nepackage:latest
+docker run -d -p 9090:8080 --name nepackage otisnado/nepackage:latest
 ```
 
 ## List of features
@@ -57,6 +52,7 @@ docker run -d -p 9090:8080 -e DBHOST=localhost -e DBPORT=3306 -e DBNAME=fofo -e 
 - [ ] Docker compose file
 - [x] Mysql database support
 - [ ] PostgreSQL database support
+- [x] In memory default SQLite database support
 - [x] CI Pipeline in GitHub Actions
 - [x] Docker Hub repository
 - [ ] Base project templates
@@ -64,13 +60,13 @@ docker run -d -p 9090:8080 -e DBHOST=localhost -e DBPORT=3306 -e DBNAME=fofo -e 
 - [ ] Golang language support (To generate projects)
 - [ ] Base CI/CD templates for GitHub Actions
 - [ ] Base CI/CD templates for Azure DevOps Pipelines
-- [ ] Spring CLI support to generate projects based on Spring Boot
+- [x] Spring CLI support to generate projects based on Spring Boot
 - [ ] Buffalo CLI support to generate prjects based on Buffalo Framework
 - [ ] Connect to GitHub to create projects repositories
 - [ ] Connecto to Azure DevOps Repos to create projects repositories
 - [x] Open API v2 definition
 - [x] Swagger endpoint
-- [ ] User login support
+- [x] User login support
 - [x] JWT Support
 - [x] Default admin user creation at first start
-- [ ] RBAC
+- [x] RBAC
