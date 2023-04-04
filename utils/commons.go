@@ -9,6 +9,8 @@ import (
 	"github.com/gobwas/glob"
 )
 
+var g glob.Glob
+
 func ConvertStringToStruct(input string) []string {
 	convertedString := strings.Split(input, ",")
 	return convertedString
@@ -29,13 +31,9 @@ func ConvertStringToUintStruct(input string) []int {
 }
 
 func MatchValidator(mustValue string, toValidateValue string) bool {
-	var g glob.Glob
-	log.Println("Compile value: ", mustValue)
-	log.Println("Match value", toValidateValue)
 
 	g = glob.MustCompile(mustValue)
 	state := g.Match(toValidateValue)
-	log.Println("Match result: ", state)
 
 	return state
 }

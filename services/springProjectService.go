@@ -1,9 +1,10 @@
 package services
 
 import (
-	"log"
 	"os"
 	"os/exec"
+
+	log "github.com/sirupsen/logrus"
 
 	"github.com/google/uuid"
 	"github.com/otisnado/nepackage/models"
@@ -16,15 +17,16 @@ func SpringProjectGenerator(springProject models.SpringProject) (springProjectOu
 	if err != nil {
 		return nil, err
 	}
-	cmd := exec.Command("spring", "init", "--artifactId="+springProject.ArtifactId, "--bootVersion="+springProject.BootVersion, "--description="+"\""+springProject.Description+"\"", "--groupId="+springProject.GroupId, "--javaVersion="+springProject.JavaVersion, "--language="+springProject.Language, "--name="+springProject.Name, "--packageName="+springProject.PackageName, "--packaging="+springProject.Packaging, "--type="+springProject.Type, "--version="+springProject.Version, uuidProject)
-	log.Println(cmd)
+
+	cmd := exec.Command("spring", "init", "--artifactId="+springProject.ArtifactId, "--bootVersion="+springProject.BootVersion, `--description="`+springProject.Description+`"`, "--groupId="+springProject.GroupId, "--javaVersion="+springProject.JavaVersion, "--language="+springProject.Language, "--name="+springProject.Name, "--packageName="+springProject.PackageName, "--packaging="+springProject.Packaging, "--type="+springProject.Type, "--version="+springProject.Version, uuidProject)
+	log.Info(cmd)
 
 	cmd.Stdout = os.Stdout
 	if err := cmd.Run(); err != nil {
-		log.Println("could not run command: ", err)
+		log.Error("could not run command: ", err)
 		return nil, err
 	}
 
-	log.Println("Project created in: ", tmpFolderCreation)
+	log.Info("Project created in: ", tmpFolderCreation)
 	return &springProject, nil
 }

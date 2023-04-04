@@ -1,4 +1,4 @@
-FROM golang:1.20.1-alpine AS build
+FROM golang:1.20-buster AS build
 
 RUN mkdir /src
 
@@ -6,7 +6,9 @@ WORKDIR /src
 
 ENV CGO_ENABLED=1
 
-RUN apk add build-base
+RUN apt update && apt upgrade -y
+
+RUN apt install build-essential -y
 
 COPY go.mod ./
 
@@ -18,38 +20,36 @@ COPY . /src/
 
 RUN go build .
 
-FROM openjdk:17-alpine
+FROM mcr.microsoft.com/openjdk/jdk:17-ubuntu
 
 
 # Variables required to build
 ENV SPRING_CLI=3.0.4
-ENV SYSTEM_USER=nepa
+ENV SYSTEM_USER=nepackage
 ENV DSN=''
 
 
 # OS repositories update
-RUN apk update
+RUN apt update && apt upgrade -y
 
 # Installing required packages
-RUN apk add curl bash git
+RUN apt install unzip zip curl git -y
 
-# Shell set up
-SHELL ["/bin/bash", "-c"]
+# Installing Spring CLI
+RUN curl https://repo.maven.apache.org/maven2/org/springframework/boot/spring-boot-cli/${SPRING_CLI}/spring-boot-cli-${SPRING_CLI}-bin.zip -o springcli.zip && \
+    unzip springcli.zip && \
+    mv spring-${SPRING_CLI} /opt/ && \
+    ln -s /opt/spring-${SPRING_CLI}/bin/spring /usr/local/bin/spring && \
+    echo 'export SPRING_HOME=/opt/spring-${SPRING_CLI}' >> /etc/profile.d/env.sh && \
+    rm springcli.zip
 
 # User creation
-RUN adduser -D -s /bin/bash ${SYSTEM_USER}
-
+RUN adduser --shell /bin/bash ${SYSTEM_USER}
 
 # User set up
 USER ${SYSTEM_USER}
 
 WORKDIR /home/${SYSTEM_USER}
-
-COPY --chown=${SYSTEM_USER}:${SYSTEM_USER} --from=build /src/setup.sh .
-
-# Installing external dependencies
-RUN chmod +x /home/${SYSTEM_USER}/setup.sh && \
-/home/${SYSTEM_USER}/setup.sh
 
 COPY --chown=${SYSTEM_USER}:${SYSTEM_USER} --from=build /src/nepackage /usr/local/bin/nepackage
 
