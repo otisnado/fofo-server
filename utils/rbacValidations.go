@@ -2,7 +2,6 @@ package utils
 
 import (
 	"errors"
-	"log"
 
 	"github.com/otisnado/nepackage/models"
 	"github.com/otisnado/nepackage/repository"
@@ -20,8 +19,6 @@ func GetRolePolicies(policiesIDs []int) ([]models.Policy, error) {
 func GetPoliciesWithMatchedPath(rolePolicies []models.Policy, urlPathRequested string) (matched []models.Policy, err error) {
 	var policiesMatched []models.Policy
 	for _, policy := range rolePolicies {
-		log.Println("Validando Path")
-		log.Println("========================================")
 		if MatchValidator(policy.Path, urlPathRequested) {
 			policiesMatched = append(policiesMatched, policy)
 		}
@@ -36,8 +33,6 @@ func GetPoliciesWithMatchedPath(rolePolicies []models.Policy, urlPathRequested s
 func ValidateMethodRequestWithPolicyMethod(policies []models.Policy, methodRequested string) (isAuthorized string, err error) {
 	var authorized string
 	for _, policy := range policies {
-		log.Println("Validando Method")
-		log.Println("========================================")
 		methodsAllowed := ConvertStringToStruct(policy.AuthorizedMethods)
 		for _, method := range methodsAllowed {
 			if MatchValidator(method, methodRequested) {

@@ -43,6 +43,9 @@ func InitRouter() *gin.Engine {
 			// Delete a project --> id is required
 			secure.DELETE("/projects/:id", controllers.DeleteProject)
 
+			// Create springProject
+			secure.POST("/projects/springProject", controllers.CreateSpringProject)
+
 			/* Languages routes */
 
 			// Find all languages supported

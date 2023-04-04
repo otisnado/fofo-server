@@ -7,6 +7,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/otisnado/nepackage/models"
 	"github.com/otisnado/nepackage/repository"
+	"github.com/otisnado/nepackage/services"
 )
 
 // FindProjects		godoc
@@ -138,4 +139,18 @@ func DeleteProject(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, gin.H{"data": state})
+}
+
+func CreateSpringProject(c *gin.Context) {
+	var springProjectInput models.SpringProject
+	if err := c.ShouldBindJSON(&springProjectInput); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+	_, err := services.SpringProjectGenerator(springProjectInput)
+	if err != nil {
+		c.JSON(http.StatusConflict, gin.H{"error": err})
+		return
+	}
+	c.JSON(http.StatusCreated, gin.H{"data": springProjectInput})
 }
