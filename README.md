@@ -56,13 +56,13 @@ docker run -d -p 9090:8080 --name nepackage otisnado/nepackage:latest
 - [x] CI Pipeline in GitHub Actions
 - [x] Docker Hub repository
 - [ ] Base project templates
-- [ ] Java language support (To generate projects)
+- [x] Java language support (To generate projects)
 - [ ] Golang language support (To generate projects)
 - [ ] Base CI/CD templates for GitHub Actions
 - [ ] Base CI/CD templates for Azure DevOps Pipelines
 - [x] Spring CLI support to generate projects based on Spring Boot
 - [ ] Buffalo CLI support to generate prjects based on Buffalo Framework
-- [ ] Connect to GitHub to create projects repositories
+- [x] Connect to GitHub to create projects repositories
 - [ ] Connecto to Azure DevOps Repos to create projects repositories
 - [x] Open API v2 definition
 - [x] Swagger endpoint
