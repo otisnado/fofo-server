@@ -11,11 +11,11 @@ import (
 	"github.com/otisnado/nepackage/utils"
 )
 
-func SpringProjectGenerator(springProject models.SpringProject) (springProjectOut *models.SpringProject, err error) {
+func SpringProjectGenerator(springProject models.SpringProject) (springProjectOut *models.SpringProject, projectPath string, err error) {
 	uuidProject := uuid.New().String()
 	tmpFolderCreation, err := utils.TmpFolderCreation(uuidProject)
 	if err != nil {
-		return nil, err
+		return nil, "", err
 	}
 
 	cmd := exec.Command("spring", "init", "--artifactId="+springProject.ArtifactId, "--bootVersion="+springProject.BootVersion, `--description="`+springProject.Description+`"`, "--groupId="+springProject.GroupId, "--javaVersion="+springProject.JavaVersion, "--language="+springProject.Language, "--name="+springProject.Name, "--packageName="+springProject.PackageName, "--packaging="+springProject.Packaging, "--type="+springProject.Type, "--version="+springProject.Version, uuidProject)
@@ -24,9 +24,9 @@ func SpringProjectGenerator(springProject models.SpringProject) (springProjectOu
 	cmd.Stdout = os.Stdout
 	if err := cmd.Run(); err != nil {
 		log.Error("could not run command: ", err)
-		return nil, err
+		return nil, "", err
 	}
 
 	log.Info("Project created in: ", tmpFolderCreation)
-	return &springProject, nil
+	return &springProject, tmpFolderCreation, nil
 }

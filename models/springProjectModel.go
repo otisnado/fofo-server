@@ -12,4 +12,5 @@ type SpringProject struct {
 	Packaging   string `json:"packaging" binding:"required"`
 	Type        string `json:"type" binding:"required"`
 	Version     string `json:"version"`
+	Visibility  bool   `json:"visibility"`
 }

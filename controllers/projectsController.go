@@ -147,10 +147,34 @@ func CreateSpringProject(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
-	_, err := services.SpringProjectGenerator(springProjectInput)
+	_, projectPath, err := services.SpringProjectGenerator(springProjectInput)
 	if err != nil {
 		c.JSON(http.StatusConflict, gin.H{"error": err})
 		return
 	}
+	err = services.InitLocalRepository(projectPath)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
+	err = services.FirstCommitLocalRepository(projectPath)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
+	repositoryUrl, err := services.CreateGitHubRemoteRepository(springProjectInput.Name, springProjectInput.Visibility)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
+	err = services.PushLocalRepositoryToGitHub(projectPath, repositoryUrl)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
 	c.JSON(http.StatusCreated, gin.H{"data": springProjectInput})
 }
