@@ -35,6 +35,7 @@ RUN apt update && apt upgrade -y
 # Installing required packages
 RUN apt install unzip zip curl git -y
 
+
 # Installing Spring CLI
 RUN curl https://repo.maven.apache.org/maven2/org/springframework/boot/spring-boot-cli/${SPRING_CLI}/spring-boot-cli-${SPRING_CLI}-bin.zip -o springcli.zip && \
     unzip springcli.zip && \
@@ -50,6 +51,11 @@ RUN adduser --shell /bin/bash ${SYSTEM_USER}
 USER ${SYSTEM_USER}
 
 WORKDIR /home/${SYSTEM_USER}
+
+# Git config
+RUN git config --global user.name "${SYSTEM_USER}" && \
+    git config --global user.email "${SYSTEM_USER}@nepackage.org" && \
+    git config --global init.defaultBranch main
 
 COPY --chown=${SYSTEM_USER}:${SYSTEM_USER} --from=build /src/nepackage /usr/local/bin/nepackage
 

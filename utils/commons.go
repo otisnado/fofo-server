@@ -3,6 +3,7 @@ package utils
 import (
 	"log"
 	"os"
+	"os/user"
 	"strconv"
 	"strings"
 
@@ -51,4 +52,15 @@ func TmpFolderCreation(folderName string) (folderPath string, err error) {
 		return "", err
 	}
 	return folderToCreate, nil
+}
+
+func GetCurrentUser() (string, error) {
+	user, err := user.Current()
+	if err != nil {
+		log.Fatalf(err.Error())
+		return "", err
+	}
+
+	username := user.Username
+	return username, nil
 }
